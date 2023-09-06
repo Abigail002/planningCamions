@@ -68,6 +68,7 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+<<<<<<< HEAD
 
 ->
 afterContainerUpdated(fn (callable $set => ('status','In Progress')))
@@ -75,3 +76,5 @@ afterContainerUpdated(fn (callable $set => ('status','In Progress')))
 # planninCamions
 Ce projet consiste à créer une application de gestion du planning des camions
 >>>>>>> af4590d (Initial commit)
+=======
+>>>>>>> 36ee1fc (Initial commit)
