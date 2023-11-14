@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('trailers', function (Blueprint $table) {
             $table->id();
             $table->string('number')->unique();
+            $table->string('length');
             $table->string('status')->default('free');
             $table->timestamps();
         });

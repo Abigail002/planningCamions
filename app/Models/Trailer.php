@@ -12,6 +12,7 @@ class Trailer extends Model
 
     protected $fillable = [
         'number',
+        'length',
         'status',
     ];
 
