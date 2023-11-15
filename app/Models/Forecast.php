@@ -36,4 +36,9 @@ class Forecast extends Model
     {
         return $this->hasMany(Delivery::class);
     }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 }

@@ -13,11 +13,13 @@ return new class extends Migration
     {
         Schema::create('deliveries', function (Blueprint $table) {
             $table->id();
-
+            $table->string('state');
+            
             $table->foreignId('forecasts_id')->constrained()->onDelete('cascade');
             $table->foreignId('containers_id')->constrained()->onDelete('cascade');
             $table->foreignId('trucks_id')->constrained()->onDelete('cascade');
             $table->foreignId('trailers_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -17,7 +17,7 @@ class ContainerTypeFactory extends Factory
     public function definition(): array
     {
         return [
-            [
+/*             [
                 'length' => "20'",
                 'heigtht' => "8'6''",
                 'subType' => "DV",
@@ -42,6 +42,6 @@ class ContainerTypeFactory extends Factory
                 'heigtht' => "9'6''",
                 'subType' => "OT",
             ],
-        ];
+ */        ];
     }
 }

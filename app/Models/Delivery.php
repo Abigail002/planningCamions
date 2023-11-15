@@ -30,4 +30,9 @@ class Delivery extends Model
     {
         return $this->belongsTo(Trailer::class);
     }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 }

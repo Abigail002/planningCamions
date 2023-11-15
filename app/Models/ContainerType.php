@@ -13,7 +13,7 @@ class ContainerType extends Model
     protected $fillable = [
         'length',
         'height',
-        'subType',
+        'subtype',
     ];
 
     public function containers(): HasMany

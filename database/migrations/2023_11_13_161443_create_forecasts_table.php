@@ -25,9 +25,9 @@ return new class extends Migration
             $table->date('loadDate');
             $table->date('loadPlace');
             $table->date('deliveryPlace');
-            $table->string('state');
 
             $table->foreignId('customers_id')->constrained()->onDelete('cascade');
+            $table->foreignId('users_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }
