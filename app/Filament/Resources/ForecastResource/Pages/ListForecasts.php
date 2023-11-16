@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Filament\Resources\DeliveryResource\Pages;
+namespace App\Filament\Resources\ForecastResource\Pages;
 
-use App\Filament\Resources\DeliveryResource;
+use App\Filament\Resources\ForecastResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
-class ListDeliveries extends ListRecords
+class ListForecasts extends ListRecords
 {
-    protected static string $resource = DeliveryResource::class;
+    protected static string $resource = ForecastResource::class;
 
     protected function getHeaderActions(): array
     {

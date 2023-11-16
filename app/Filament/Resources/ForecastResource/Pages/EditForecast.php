@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Filament\Resources\DeliveryResource\Pages;
+namespace App\Filament\Resources\ForecastResource\Pages;
 
-use App\Filament\Resources\DeliveryResource;
+use App\Filament\Resources\ForecastResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
-class EditDelivery extends EditRecord
+class EditForecast extends EditRecord
 {
-    protected static string $resource = DeliveryResource::class;
+    protected static string $resource = ForecastResource::class;
 
     protected function getHeaderActions(): array
     {
