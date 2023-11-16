@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Filament\Resources\CustomerResource\Pages;
+namespace App\Filament\Resources\TruckResource\Pages;
 
-use App\Filament\Resources\CustomerResource;
+use App\Filament\Resources\TruckResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
-class EditCustomer extends EditRecord
+class EditTruck extends EditRecord
 {
-    protected static string $resource = CustomerResource::class;
+    protected static string $resource = TruckResource::class;
 
     protected function getHeaderActions(): array
     {
@@ -16,7 +16,6 @@ class EditCustomer extends EditRecord
             Actions\DeleteAction::make(),
         ];
     }
-
     protected function getRedirectUrl(): string
     {
         return $this->getResource()::getUrl('index');
