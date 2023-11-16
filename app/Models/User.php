@@ -60,8 +60,8 @@ class User extends Authenticatable implements FilamentUser
         return $this->hasMany(Forecast::class);
     }
 
-    public function deliveries(): HasMany
+    public function containers(): HasMany
     {
-        return $this->hasMany(Delivery::class);
+        return $this->hasMany(Container::class);
     }
 }

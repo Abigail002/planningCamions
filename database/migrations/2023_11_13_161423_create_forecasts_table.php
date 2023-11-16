@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('operation');
             $table->string('BL');
-            $table->string('consignee');
             $table->string('vessel');
             $table->string('voyage');
             $table->date('ETA');
@@ -24,10 +23,10 @@ return new class extends Migration
             $table->integer('numbTruck');
             $table->date('loadDate');
             $table->date('loadPlace');
-            $table->date('deliveryPlace');
+            $table->string('deliveryPlace');
 
-            $table->foreignId('customers_id')->constrained()->onDelete('cascade');
-            $table->foreignId('users_id')->constrained()->onDelete('cascade');
+            $table->foreignId('customer_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }
