@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ForecastResource\Pages;
 use App\Filament\Resources\ForecastResource\RelationManagers;
+use App\Filament\Resources\ForecastResource\RelationManagers\ContainersRelationManager;
 use App\Models\Forecast;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -135,7 +136,7 @@ class ForecastResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            ContainersRelationManager::class
         ];
     }
 
