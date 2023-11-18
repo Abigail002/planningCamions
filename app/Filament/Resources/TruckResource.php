@@ -18,6 +18,9 @@ class TruckResource extends Resource
     protected static ?string $model = Truck::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-truck';
+    protected static ?string $navigationLabel = 'Tractor';
+    protected static ?string $modelLabel = 'Tractor';
+    protected static ?string $navigationGroup = 'Truck';
 
     public static function form(Form $form): Form
     {
