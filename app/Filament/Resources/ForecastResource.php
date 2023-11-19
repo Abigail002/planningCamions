@@ -29,9 +29,13 @@ class ForecastResource extends Resource
                 Forms\Components\Select::make('user_id')
                     ->relationship('user', 'name')
                     ->required(),
-                Forms\Components\TextInput::make('operation')
+                Forms\Components\Select::make('operation')
                     ->required()
-                    ->maxLength(255),
+                    ->options([
+                        'Import' => 'Import',
+                        'Export' => 'Export',
+                        'Frigo' => 'Frigo',
+                    ]),
                 Forms\Components\TextInput::make('BL')
                     ->required()
                     ->maxLength(255),
@@ -53,8 +57,9 @@ class ForecastResource extends Resource
                     ->numeric(),
                 Forms\Components\DatePicker::make('loadDate')
                     ->required(),
-                Forms\Components\DatePicker::make('loadPlace')
-                    ->required(),
+                Forms\Components\TextInput::make('loadPlace')
+                    ->required()
+                    ->maxLength(255),
                 Forms\Components\TextInput::make('deliveryPlace')
                     ->required()
                     ->maxLength(255),
@@ -113,6 +118,7 @@ class ForecastResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
