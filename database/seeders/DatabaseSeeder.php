@@ -34,6 +34,7 @@ class DatabaseSeeder extends Seeder
         $role = Role::create(['name' => 'Admin']);
         $role1 = Role::create(['name' => 'CoordinationOfficer']);
         $role2 = Role::create(['name' => 'OperationOfficer']);
+        $role3 = Role::create(['name' => 'Driver']);
         $user->assignRole($role);
 
         ContainerType::factory()->create([

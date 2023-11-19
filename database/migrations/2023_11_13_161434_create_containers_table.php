@@ -13,11 +13,15 @@ return new class extends Migration
     {
         Schema::create('containers', function (Blueprint $table) {
             $table->id();
-            $table->integer('number');
+            $table->string('number');
             $table->integer('weight');
             $table->integer('workOrder');
 
-            $table->foreignId('container_types_id')->constrained()->onDelete('cascade');
+            $table->foreignId('container_type_id')->constrained()->onDelete('cascade');
+            $table->foreignId('forecast_id')->constrained()->onDelete('cascade');
+            $table->foreignId('truck_id')->constrained()->onDelete('cascade');
+            $table->foreignId('trailer_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -4,7 +4,6 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ForecastResource\Pages;
 use App\Filament\Resources\ForecastResource\RelationManagers;
-use App\Filament\Resources\ForecastResource\RelationManagers\ContainersRelationManager;
 use App\Models\Forecast;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -26,23 +25,17 @@ class ForecastResource extends Resource
             ->schema([
                 Forms\Components\Select::make('customer_id')
                     ->relationship('customer', 'name')
-                    ->native(false)
-                    ->searchable()
-                    ->preload()
                     ->required(),
                 Forms\Components\Select::make('user_id')
                     ->relationship('user', 'name')
                     ->required(),
                 Forms\Components\Select::make('operation')
+                    ->required()
                     ->options([
                         'Import' => 'Import',
                         'Export' => 'Export',
-                        'Fridge' => 'Fridge',
-                        'BLD' => 'BLD',
-                    ])
-                    ->native(false)
-                    ->searchable()
-                    ->preload(),
+                        'Frigo' => 'Frigo',
+                    ]),
                 Forms\Components\TextInput::make('BL')
                     ->required()
                     ->maxLength(255),
@@ -64,8 +57,9 @@ class ForecastResource extends Resource
                     ->numeric(),
                 Forms\Components\DatePicker::make('loadDate')
                     ->required(),
-                Forms\Components\DatePicker::make('loadPlace')
-                    ->required(),
+                Forms\Components\TextInput::make('loadPlace')
+                    ->required()
+                    ->maxLength(255),
                 Forms\Components\TextInput::make('deliveryPlace')
                     ->required()
                     ->maxLength(255),
@@ -80,7 +74,6 @@ class ForecastResource extends Resource
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('user.name')
-                    ->label('Created by')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('operation')
@@ -125,6 +118,7 @@ class ForecastResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -136,7 +130,7 @@ class ForecastResource extends Resource
     public static function getRelations(): array
     {
         return [
-            ContainersRelationManager::class
+            //
         ];
     }
 

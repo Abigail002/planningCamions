@@ -20,4 +20,5 @@ class ContainerType extends Model
     {
         return $this->hasMany(Container::class);
     }
+
 }

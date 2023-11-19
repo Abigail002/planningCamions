@@ -16,7 +16,6 @@ class Forecast extends Model
         'user_id',
         'operation',
         'BL',
-        'consignee',
         'vessel',
         'voyage',
         'ETA',
@@ -34,9 +33,9 @@ class Forecast extends Model
         return $this->belongsTo(Customer::class);
     }
 
-    public function deliveries(): HasMany
+    public function containers(): HasMany
     {
-        return $this->hasMany(Delivery::class);
+        return $this->hasMany(Container::class);
     }
 
     public function user(): BelongsTo

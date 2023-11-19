@@ -13,6 +13,11 @@ class Container extends Model
 
     protected $fillable = [
         'number',
+        'container_type_id',
+        'forecast_id',
+        'truck_id',
+        'trailer_id',
+        'user_id',
         'weight',
         'workOrder',
     ];
@@ -21,9 +26,20 @@ class Container extends Model
     {
         return $this->belongsTo(ContainerType::class);
     }
-
-    public function deliveries(): HasMany
+    public function forecast(): BelongsTo
     {
-        return $this->hasMany(Delivery::class);
+        return $this->belongsTo(Forecast::class);
+    }
+    public function truck(): BelongsTo
+    {
+        return $this->belongsTo(Truck::class);
+    }
+    public function trailer(): BelongsTo
+    {
+        return $this->belongsTo(Trailer::class);
+    }
+    public function driver(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 }

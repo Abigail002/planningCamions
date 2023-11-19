@@ -30,6 +30,7 @@ class AdminPanelProvider extends PanelProvider
             ->brandName('MEDLOG FLEET')
             ->colors([
                 'primary' => Color::Amber,
+                'primary' => "#F2BB16",
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
