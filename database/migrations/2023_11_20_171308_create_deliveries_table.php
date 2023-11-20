@@ -12,7 +12,21 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('deliveries', function (Blueprint $table) {
-            $table->id();
+            $table->string('operation');
+            $table->string('BL');
+            $table->string('vessel');
+            $table->string('voyage');
+            $table->date('ETA');
+            $table->integer('idTrakit');
+            $table->date('forecastDate');
+            $table->integer('numbTruck');
+            $table->date('loadDate');
+            $table->date('loadPlace');
+            $table->string('deliveryPlace');
+            $table->string('containers');
+
+            $table->foreignId('customer_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }
