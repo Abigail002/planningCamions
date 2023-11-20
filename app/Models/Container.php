@@ -21,6 +21,7 @@ class Container extends Model
         'weight',
         'workOrder',
         'status',
+        'loading_file_id'
     ];
 
     public function type(): BelongsTo
@@ -44,8 +45,8 @@ class Container extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function containers(): HasMany
+    public function file(): BelongsTo
     {
-        return $this->hasMany(Container::class);
+        return $this->belongsTo(LoadingFile::class);
     }
 }
