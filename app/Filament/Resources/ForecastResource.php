@@ -24,6 +24,10 @@ class ForecastResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('customer_id')
+                    ->native(false)
+                    ->searchable()
+                    ->preload()
+                    ->required()
                     ->options(fn () => \App\Models\Customer::pluck('name', 'id')->mapWithKeys(function ($name, $id) {
                         $customer = \App\Models\Customer::find($id);
                         return [$id => "{$name} - {$customer->address}"];
@@ -35,18 +39,19 @@ class ForecastResource extends Resource
                         Forms\Components\TextInput::make('address')
                             ->required()
                             ->maxLength(255),
-                    ])
-                    ->required(),
+                    ]),
                 Forms\Components\Select::make('user_id')
                     ->relationship('user', 'name')
                     ->required(),
                 Forms\Components\Select::make('operation')
-                    ->required()
                     ->options([
                         'Import' => 'Import',
                         'Export' => 'Export',
                         'Frigo' => 'Frigo',
-                    ]),
+                    ])->native(false)
+                    ->searchable()
+                    ->preload()
+                    ->required(),
                 Forms\Components\TextInput::make('BL')
                     ->required()
                     ->maxLength(255),
