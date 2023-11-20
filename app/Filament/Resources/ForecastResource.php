@@ -48,6 +48,7 @@ class ForecastResource extends Resource
                         'Import' => 'Import',
                         'Export' => 'Export',
                         'Frigo' => 'Frigo',
+                        'BLD' => 'BLD',
                     ])->native(false)
                     ->searchable()
                     ->preload()
