@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use Chiiya\FilamentAccessControl\Enumerators\Feature;
 use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
@@ -10,8 +11,6 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class UserResource extends Resource
 {
@@ -36,6 +35,12 @@ class UserResource extends Resource
                 Forms\Components\TextInput::make('password')
                     ->password()
                     ->default("password"),
+                Forms\Components\Select::make('roles')
+                    ->relationship('roles', 'name')
+                    ->native(false)
+                    ->searchable()
+                    ->preload()
+                    ->required(),
             ]);
     }
 
@@ -49,6 +54,11 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('email')
                     ->sortable()
                     ->searchable(),
+                Tables\Columns\TagsColumn::make('roles.name')
+                    ->label('Role')
+                    ->label(strval(__('Role')))
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('contact')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
