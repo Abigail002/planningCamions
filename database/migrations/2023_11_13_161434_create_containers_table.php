@@ -16,12 +16,14 @@ return new class extends Migration
             $table->string('number');
             $table->integer('weight');
             $table->integer('workOrder');
+            $table->string('status')->default('Pending');
 
             $table->foreignId('container_type_id')->constrained()->onDelete('cascade');
             $table->foreignId('forecast_id')->constrained()->onDelete('cascade');
             $table->foreignId('truck_id')->constrained()->onDelete('cascade');
             $table->foreignId('trailer_id')->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('loading_files_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -20,6 +20,7 @@ class Container extends Model
         'user_id',
         'weight',
         'workOrder',
+        'status',
     ];
 
     public function type(): BelongsTo
@@ -41,5 +42,10 @@ class Container extends Model
     public function driver(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function containers(): HasMany
+    {
+        return $this->hasMany(Container::class);
     }
 }
