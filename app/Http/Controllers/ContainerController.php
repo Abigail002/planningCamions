@@ -52,15 +52,32 @@ class ContainerController extends Controller
      */
     public function update(Request $request, Container $container)
     {
-        $loading = $request->loading();
+        $loading = $request->loading;
 
         $container->update([
             'loading_file_id' => $loading,
             'status' => 'Delivered',
         ]);
-
         $container->save();
-        return redirect()->action([ContainerController::class, 'update']);
+
+        $containers = Container::where('forecast_id', $container->forecast_id)->get();
+
+        $allDelivered = true;
+
+        foreach ($containers as $container) {
+            if ($container->status !== 'delivered') {
+                $allDelivered = false;
+                break;
+            }
+            $allContainers[] = $container->number;
+        }
+
+        if($allDelivered == true)
+        {
+            $forecast = $container->forecast_id;
+            return redirect()->route('delivery.store', ['forecast' => $forecast,'containers' => $allContainers]);
+        }
+        else return 'File added to the container';
     }
 
     /**

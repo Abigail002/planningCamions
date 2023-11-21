@@ -26,6 +26,7 @@ Route::name('api.')->group(
             Route::post('/login', LoginController::class)->name('login');
         });
 
-        Route::get('/container/{id}', [PostController::class, 'store'])->name('container.store');
+        Route::post('/container/update/{id}', 'ContainerController@update')->name('container.update');
+        Route::post('/delivery/store', 'Delivery@store')->name('delivery.store');
     }
 );
