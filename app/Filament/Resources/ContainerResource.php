@@ -25,83 +25,90 @@ class ContainerResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('container_type_id')
-                    ->native(false)
-                    ->searchable()
-                    ->preload()
-                    ->required()
-                    ->options(fn () => \App\Models\ContainerType::pluck('length', 'id')->mapWithKeys(function ($length, $id) {
-                        $container = \App\Models\ContainerType::find($id);
-                        return [$id => "{$length} - {$container->height} - {$container->subtype}"];
-                    }))
-                    ->createOptionForm([
-                        Forms\Components\TextInput::make('length')
-                            ->required()
-                            ->maxLength(255),
-                        Forms\Components\TextInput::make('height')
-                            ->required()
-                            ->maxLength(255),
-                        Forms\Components\TextInput::make('subtype')
-                            ->required()
-                            ->maxLength(255),
-                    ]),
-                Forms\Components\Select::make('forecast_id')
-                    ->relationship('forecast', 'id')
-                    ->native(false)
-                    ->searchable()
-                    ->preload()
-                    ->required(),
-                Forms\Components\Select::make('truck_id')
-                    ->relationship('truck', 'number')
-                    ->native(false)
-                    ->searchable()
-                    ->preload()
-                    ->required()
-                    ->createOptionForm([
+                Forms\Components\Section::make('Properties')
+                    ->description('Container properties')
+                    ->icon('heroicon-o-cube')
+                    ->schema([
                         Forms\Components\TextInput::make('number')
                             ->required()
                             ->maxLength(255),
-                    ]),
-                Forms\Components\Select::make('trailer_id')
-                    ->options(fn () => \App\Models\Trailer::pluck('number', 'id')->mapWithKeys(function ($number, $id) {
-                        $trailer = \App\Models\ContainerType::find($id);
-                        return [$id => "{$number} - {$trailer->length}"];
-                    }))
-                    ->native(false)
-                    ->searchable()
-                    ->preload()
-                    ->required()
-                    ->createOptionForm([
-                        Forms\Components\TextInput::make('number')
+                        Forms\Components\TextInput::make('weight')
                             ->required()
-                            ->maxLength(255),
-                        Forms\Components\TextInput::make('length')
+                            ->numeric(),
+                        Forms\Components\TextInput::make('workOrder')
                             ->required()
-                            ->maxLength(255),
+                            ->numeric(),
+                        Forms\Components\Select::make('container_type_id')
+                            ->native(false)
+                            ->searchable()
+                            ->preload()
+                            ->required()
+                            ->options(fn () => \App\Models\ContainerType::pluck('length', 'id')->mapWithKeys(function ($length, $id) {
+                                $container = \App\Models\ContainerType::find($id);
+                                return [$id => "{$length} - {$container->height} - {$container->subtype}"];
+                            }))
+                            ->createOptionForm([
+                                Forms\Components\TextInput::make('length')
+                                    ->required()
+                                    ->maxLength(255),
+                                Forms\Components\TextInput::make('height')
+                                    ->required()
+                                    ->maxLength(255),
+                                Forms\Components\TextInput::make('subtype')
+                                    ->required()
+                                    ->maxLength(255),
+                            ]),
+                    ])->columns(2),
+                Forms\Components\Section::make('Forecast')
+                    ->description('Select the forecast associated')
+                    ->icon('heroicon-m-shopping-bag')
+                    ->schema([
+                        Forms\Components\Select::make('forecast_id')
+                            ->relationship('forecast', 'id')
+                            ->native(false)
+                            ->searchable()
+                            ->preload()
+                            ->required()->options(fn () => \App\Models\Forecast::pluck('BL', 'id')->mapWithKeys(function ($BL, $id) {
+                                $forecast = \App\Models\Forecast::find($id);
+                                return [$id => "{$forecast->operation} - {$forecast->customer->name} - {$BL}"];
+                            })),
                     ]),
-                Forms\Components\Select::make('user_id')
-                    ->label('Driver')
-                    ->native(false)
-                    ->searchable()
-                    ->preload()
-                    ->required()
-                    ->options(fn () => UserController::getDriversList()),
-                Forms\Components\TextInput::make('loading_file_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('number')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('weight')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('workOrder')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('status')
-                    ->required()
-                    ->maxLength(255)
-                    ->default('Pending'),
+                Forms\Components\Section::make('Driver et truck')
+                    ->description('Select the driver in charge of the delivery and the truck')
+                    ->icon('heroicon-o-user')
+                    ->schema([
+                        Forms\Components\Select::make('truck_id')
+                            ->relationship('truck', 'number')
+                            ->native(false)
+                            ->searchable()
+                            ->preload()
+                            ->required()
+                            ->createOptionForm([
+                                Forms\Components\TextInput::make('number')
+                                    ->required()
+                                    ->maxLength(255),
+                            ]),
+                        Forms\Components\Select::make('trailer_id')
+                            ->relationship('Trailer', 'number')
+                            ->native(false)
+                            ->searchable()
+                            ->preload()
+                            ->required()
+                            ->createOptionForm([
+                                Forms\Components\TextInput::make('number')
+                                    ->required()
+                                    ->maxLength(255),
+                                Forms\Components\TextInput::make('length')
+                                    ->required()
+                                    ->maxLength(255),
+                            ]),
+                        Forms\Components\Select::make('user_id')
+                            ->label('Driver')
+                            ->native(false)
+                            ->searchable()
+                            ->preload()
+                            ->options(fn () => UserController::getDriversList()),
+                    ])->columns(3),
             ]);
     }
 
