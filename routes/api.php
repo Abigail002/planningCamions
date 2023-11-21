@@ -25,5 +25,7 @@ Route::name('api.')->group(
         Route::middleware('guest')->group(function () {
             Route::post('/login', LoginController::class)->name('login');
         });
+
+        Route::get('/container/{id}', [PostController::class, 'store'])->name('container.store');
     }
 );

@@ -52,7 +52,15 @@ class ContainerController extends Controller
      */
     public function update(Request $request, Container $container)
     {
-        
+        $loading = $request->loading();
+
+        $container->update([
+            'loading_file_id' => $loading,
+            'status' => 'Delivered',
+        ]);
+
+        $container->save();
+        return redirect()->action([ContainerController::class, 'update']);
     }
 
     /**

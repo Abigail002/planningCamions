@@ -51,9 +51,7 @@ class LoadingFileController extends Controller
 
         $number = $request->input('container');
         $container = Container::where('number', $number)->get();
-        $container->status = "Delivered";
-        $container->loading_file_id = $loadingFile->id;
-        $container->save();
+        return redirect()->route('container.update', ['id' => $container->id, 'loading' => $loadingFile->id]);
     }
 
     /**
