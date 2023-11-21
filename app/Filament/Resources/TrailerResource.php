@@ -17,7 +17,7 @@ class TrailerResource extends Resource
 {
     protected static ?string $model = Trailer::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-truck';
     protected static ?string $navigationGroup = 'Truck';
 
     public static function form(Form $form): Form

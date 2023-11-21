@@ -12,6 +12,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Auth;
 
 class ForecastResource extends Resource
 {
@@ -23,63 +24,84 @@ class ForecastResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('customer_id')
-                    ->native(false)
-                    ->searchable()
-                    ->preload()
-                    ->required()
-                    ->options(fn () => \App\Models\Customer::pluck('name', 'id')->mapWithKeys(function ($name, $id) {
-                        $customer = \App\Models\Customer::find($id);
-                        return [$id => "{$name} - {$customer->address}"];
-                    }))
-                    ->createOptionForm([
-                        Forms\Components\TextInput::make('name')
+                Forms\Components\Section::make('Author and Customer')
+                    ->description('Just select the customer')
+                    ->icon('heroicon-o-users')
+                    ->schema([
+                        Forms\Components\Select::make('customer_id')
+                            ->native(false)
+                            ->searchable()
+                            ->preload()
+                            ->required()
+                            ->relationship('Customer', 'name')
+                            ->createOptionForm([
+                                Forms\Components\TextInput::make('name')
+                                    ->required()
+                                    ->maxLength(255),
+                                Forms\Components\TextInput::make('address')
+                                    ->required()
+                                    ->maxLength(255),
+                            ]),
+                        Forms\Components\TextInput::make('user_id')
+                            ->required()
+                            ->label("Responsible person")
+                            ->default(fn () => Auth::user()->name),
+                    ])->columns(2),
+                Forms\Components\Section::make('Properties')
+                    ->description('Forecast properties')
+                    ->icon('heroicon-o-cube')
+                    ->schema([
+                        Forms\Components\Select::make('operation')
+                            ->options([
+                                'Import' => 'Import',
+                                'Export' => 'Export',
+                                'Frigo' => 'Frigo',
+                                'BLD' => 'BLD',
+                            ])
+                            ->native(false)
+                            ->searchable()
+                            ->preload()
+                            ->required(),
+                        Forms\Components\TextInput::make('BL')
                             ->required()
                             ->maxLength(255),
-                        Forms\Components\TextInput::make('address')
+                        Forms\Components\TextInput::make('numbTruck')
+                            ->required()
+                            ->numeric(),
+                        Forms\Components\TextInput::make('idTrakit')
+                            ->required()
+                            ->numeric(),
+                    ])->columns(2),
+                Forms\Components\Section::make('Shippement')
+                    ->description('About the vessel')
+                    ->icon('heroicon-o-banknotes')
+                    ->schema([
+                        Forms\Components\TextInput::make('vessel')
                             ->required()
                             ->maxLength(255),
-                    ]),
-                Forms\Components\Select::make('user_id')
-                    ->relationship('user', 'name')
-                    ->required(),
-                Forms\Components\Select::make('operation')
-                    ->options([
-                        'Import' => 'Import',
-                        'Export' => 'Export',
-                        'Frigo' => 'Frigo',
-                        'BLD' => 'BLD',
-                    ])->native(false)
-                    ->searchable()
-                    ->preload()
-                    ->required(),
-                Forms\Components\TextInput::make('BL')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('vessel')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('voyage')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\DatePicker::make('ETA')
-                    ->required(),
-                Forms\Components\TextInput::make('idTrakit')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\DatePicker::make('forecastDate')
-                    ->required(),
-                Forms\Components\TextInput::make('numbTruck')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\DatePicker::make('loadDate')
-                    ->required(),
-                Forms\Components\TextInput::make('loadPlace')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('deliveryPlace')
-                    ->required()
-                    ->maxLength(255),
+                        Forms\Components\TextInput::make('voyage')
+                            ->required()
+                            ->maxLength(255),
+                        Forms\Components\DatePicker::make('ETA')
+                            ->native(false)
+                            ->required(),
+                    ])->columns(3),
+                Forms\Components\Section::make('Delivery')
+                    ->icon('heroicon-o-cube')
+                    ->schema([
+                        Forms\Components\DatePicker::make('forecastDate')
+                        ->native(false)
+                        ->required(),
+                        Forms\Components\DatePicker::make('loadDate')
+                        ->native(false)
+                        ->required(),
+                        Forms\Components\TextInput::make('loadPlace')
+                            ->required()
+                            ->numeric(),
+                        Forms\Components\TextInput::make('deliveryPlace')
+                            ->required()
+                            ->maxLength(255),
+                    ])->columns(2),
             ]);
     }
 
@@ -117,7 +139,6 @@ class ForecastResource extends Resource
                     ->date()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('loadPlace')
-                    ->date()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('deliveryPlace')
                     ->searchable(),

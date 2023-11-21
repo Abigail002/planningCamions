@@ -19,6 +19,7 @@ class ContainerTypeResource extends Resource
     protected static ?string $model = ContainerType::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-cube';
+    protected static ?string $navigationGroup = 'About Containers';
 
     public static function form(Form $form): Form
     {

@@ -22,7 +22,7 @@ return new class extends Migration
             $table->date('forecastDate');
             $table->integer('numbTruck');
             $table->date('loadDate');
-            $table->date('loadPlace');
+            $table->string('loadPlace');
             $table->string('deliveryPlace');
 
             $table->foreignId('customer_id')->constrained()->onDelete('cascade');

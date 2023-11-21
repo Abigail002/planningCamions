@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Filament\Resources\ForecastResource\Pages;
+namespace App\Filament\Resources\ContainerResource\Pages;
 
-use App\Filament\Resources\ForecastResource;
+use App\Filament\Resources\ContainerResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
-class EditForecast extends EditRecord
+class EditContainer extends EditRecord
 {
-    protected static string $resource = ForecastResource::class;
+    protected static string $resource = ContainerResource::class;
 
     protected function getHeaderActions(): array
     {
@@ -16,7 +16,6 @@ class EditForecast extends EditRecord
             Actions\DeleteAction::make(),
         ];
     }
-
     protected function getRedirectUrl(): string
     {
         return $this->getResource()::getUrl('index');
