@@ -20,4 +20,9 @@ class Trailer extends Model
     {
         return $this->hasMany(Container::class);
     }
+
+    public static function countTrailersNotInUse()
+    {
+        return Trailer::where('status', 'Not in use')->count();
+    }
 }

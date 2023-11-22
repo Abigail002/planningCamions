@@ -44,12 +44,11 @@ class ForecastResource extends Resource
                                     ->maxLength(255),
                             ]),
                         Forms\Components\TextInput::make('user_name')
-                            ->required()
                             ->label("Responsible person")
-                            ->default(fn () => Auth::user()->name)
-                            ->disabled(),
+                            ->default( Auth::user()->name)
+                            ->readonly(),
                         Forms\Components\Hidden::make('user_id')
-                            ->default(fn () => Auth::user()->id)
+                            ->default( Auth::user()->id)
                             ->required(),
                     ])->columns(2),
                 Forms\Components\Section::make('Properties')
