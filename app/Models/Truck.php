@@ -19,4 +19,8 @@ class Truck extends Model
     {
         return $this->hasMany(Container::class);
     }
+    public static function countTractorsNotInUse()
+    {
+        return Truck::where('status', 'Not in use')->count();
+    }
 }

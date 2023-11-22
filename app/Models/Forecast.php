@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Carbon\Carbon;
 
 class Forecast extends Model
 {
@@ -41,5 +42,18 @@ class Forecast extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public static function countTodayForecastsToday()
+    {
+        return self::whereDate('forecastDate', Carbon::today())->count();
+    }
+
+    public static function countForecastsThisWeek()
+    {
+        $startOfWeek = Carbon::now()->startOfWeek(); // Début de la semaine en cours
+        $endOfWeek = Carbon::now()->endOfWeek();     // Fin de la semaine en cours
+
+        return self::whereBetween('forecastDate', [$startOfWeek, $endOfWeek])->count();
     }
 }

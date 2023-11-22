@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ForecastResource\Pages;
 use App\Filament\Resources\ForecastResource\RelationManagers;
+use App\Filament\Resources\ForecastResource\RelationManagers\ContainersRelationManager;
 use App\Models\Forecast;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -42,10 +43,13 @@ class ForecastResource extends Resource
                                     ->required()
                                     ->maxLength(255),
                             ]),
-                        Forms\Components\TextInput::make('user_id')
-                            ->required()
+                        Forms\Components\TextInput::make('user_name')
                             ->label("Responsible person")
-                            ->default(fn () => Auth::user()->name),
+                            ->default( Auth::user()->name)
+                            ->readonly(),
+                        Forms\Components\Hidden::make('user_id')
+                            ->default( Auth::user()->id)
+                            ->required(),
                     ])->columns(2),
                 Forms\Components\Section::make('Properties')
                     ->description('Forecast properties')
@@ -90,14 +94,20 @@ class ForecastResource extends Resource
                     ->icon('heroicon-o-cube')
                     ->schema([
                         Forms\Components\DatePicker::make('forecastDate')
-                        ->native(false)
-                        ->required(),
+                            ->native(false)
+                            ->required(),
                         Forms\Components\DatePicker::make('loadDate')
+                            ->native(false)
+                            ->required(),
+                        Forms\Components\Select::make('loadPlace')
+                        ->options([
+                            'LCT' => 'LCT',
+                            'PAL' => 'PAL',
+                        ])
                         ->native(false)
+                        ->searchable()
+                        ->preload()
                         ->required(),
-                        Forms\Components\TextInput::make('loadPlace')
-                            ->required()
-                            ->numeric(),
                         Forms\Components\TextInput::make('deliveryPlace')
                             ->required()
                             ->maxLength(255),
@@ -168,7 +178,7 @@ class ForecastResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            ContainersRelationManager::class
         ];
     }
 
