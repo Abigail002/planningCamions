@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\ForecastResource\RelationManagers;
 
 use App\Http\Controllers\UserController;
+use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -23,6 +24,7 @@ class ContainersRelationManager extends RelationManager
                 Forms\Components\Section::make('Properties')
                     ->description('Container properties')
                     ->icon('heroicon-o-cube')
+                    ->hidden(!auth()->user()->is_Admin)
                     ->schema([
                         Forms\Components\TextInput::make('number')
                             ->required()
@@ -57,7 +59,6 @@ class ContainersRelationManager extends RelationManager
                 Forms\Components\Section::make('Driver et truck')
                     ->description('Select the driver in charge of the delivery and the truck')
                     ->icon('heroicon-o-user')
-                    ->if(Auth::user()->role =='Driver')
                     ->schema([
                         Forms\Components\Select::make('truck_id')
                             ->relationship('truck', 'number')

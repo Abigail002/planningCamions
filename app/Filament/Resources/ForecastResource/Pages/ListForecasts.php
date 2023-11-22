@@ -12,7 +12,6 @@ use Carbon\Carbon;
 class ListForecasts extends ListRecords
 {
     protected static string $resource = ForecastResource::class;
-
     protected function getHeaderActions(): array
     {
         return [
@@ -25,6 +24,8 @@ class ListForecasts extends ListRecords
             'all' => Tab::make(),
             'Today Forecasts' => Tab::make()
                 ->modifyQueryUsing(fn (Builder $query) => $query->whereDate('forecastDate', Carbon::today())),
+            'This Week Forecasts' => Tab::make()
+                ->modifyQueryUsing(fn (Builder $query) => $query->whereBetween('forecastDate', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])),
         ];
     }
 }
