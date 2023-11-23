@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Container;
+use App\Models\Forecast;
 use Illuminate\Http\Request;
 
 class ContainerController extends Controller
@@ -69,13 +70,15 @@ class ContainerController extends Controller
                 $allDelivered = false;
                 break;
             }
-            $allContainers[] = $container->number;
         }
 
         if($allDelivered == true)
         {
-            $forecast = $container->forecast_id;
-            return redirect()->route('delivery.store', ['forecast' => $forecast,'containers' => $allContainers]);
+            $forecast = Forecast::where('id', $container->forecast_id)->get();
+            $forecast->update([
+                'status' => 'Delivered',
+            ]);
+            $forecast->save();
         }
         else return 'File added to the container';
     }
@@ -86,5 +89,14 @@ class ContainerController extends Controller
     public function destroy(Container $container)
     {
         //
+    }
+    public function updateStatus (Container $container)
+    {
+        $container = Container::where('forecast_id', $container->forecast_id)->get();
+        $container->update([
+            'status' => 'In process',
+        ]);
+        $container->save();
+        return redirect()->route('forecast.update', ['id' => $container->forecast_id]);
     }
 }

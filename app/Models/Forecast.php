@@ -26,7 +26,7 @@ class Forecast extends Model
         'loadDate',
         'loadPlace',
         'deliveryPlace',
-        'state',
+        'status',
     ];
 
     public function customer(): BelongsTo

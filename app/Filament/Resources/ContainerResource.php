@@ -6,6 +6,7 @@ use App\Filament\Resources\ContainerResource\Pages;
 use App\Filament\Resources\ContainerResource\RelationManagers;
 use App\Http\Controllers\UserController;
 use App\Models\Container;
+use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -27,6 +28,7 @@ class ContainerResource extends Resource
             ->schema([
                 Forms\Components\Section::make('Properties')
                     ->description('Container properties')
+                    ->hidden(fn (User $user) => $user->role == 'CoordinationOfficer')
                     ->icon('heroicon-o-cube')
                     ->schema([
                         Forms\Components\TextInput::make('number')
@@ -61,6 +63,7 @@ class ContainerResource extends Resource
                     ])->columns(2),
                 Forms\Components\Section::make('Forecast')
                     ->description('Select the forecast associated')
+                    ->hidden(fn (User $user) => $user->role == 'CoordinationOfficer')
                     ->icon('heroicon-m-shopping-bag')
                     ->schema([
                         Forms\Components\Select::make('forecast_id')
@@ -75,6 +78,7 @@ class ContainerResource extends Resource
                     ]),
                 Forms\Components\Section::make('Driver et truck')
                     ->description('Select the driver in charge of the delivery and the truck')
+                    ->hidden(fn (User $user) => $user->role !== 'CoordinationOfficer')
                     ->icon('heroicon-o-user')
                     ->schema([
                         Forms\Components\Select::make('truck_id')

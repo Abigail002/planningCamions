@@ -21,11 +21,16 @@ class ListForecasts extends ListRecords
     public function getTabs(): array
     {
         return [
-            'all' => Tab::make(),
+            'All Pending Forecasts' => Tab::make()
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 'Pending')),
             'Today Forecasts' => Tab::make()
                 ->modifyQueryUsing(fn (Builder $query) => $query->whereDate('forecastDate', Carbon::today())),
             'This Week Forecasts' => Tab::make()
                 ->modifyQueryUsing(fn (Builder $query) => $query->whereBetween('forecastDate', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])),
+            'In process' => Tab::make()
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 'In process')),
+            'Delivered' => Tab::make()
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 'Delivered')),
         ];
     }
 }

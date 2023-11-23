@@ -24,7 +24,8 @@ class ContainersRelationManager extends RelationManager
                 Forms\Components\Section::make('Properties')
                     ->description('Container properties')
                     ->icon('heroicon-o-cube')
-                    ->hidden(!auth()->user()->is_Admin)
+                    //->hidden(!auth()->user()->is_CoordinationOfficer)
+                    ->hidden(fn (User $user) => $user->role !== 'CoordinationOfficer')
                     ->schema([
                         Forms\Components\TextInput::make('number')
                             ->required()
@@ -58,6 +59,7 @@ class ContainersRelationManager extends RelationManager
                     ])->columns(2),
                 Forms\Components\Section::make('Driver et truck')
                     ->description('Select the driver in charge of the delivery and the truck')
+                    ->hidden(fn (User $user) => $user->role == 'CoordinationOfficer')
                     ->icon('heroicon-o-user')
                     ->schema([
                         Forms\Components\Select::make('truck_id')

@@ -64,7 +64,7 @@ class User extends Authenticatable implements FilamentUser
     {
         return $this->hasMany(Container::class);
     }
-    public function hasAnyRole(array $roles)
+/*     public function hasAnyRole(array $roles)
     {
         return $this->roles()->whereIn('name', $roles)->exists();
     }
@@ -72,4 +72,4 @@ class User extends Authenticatable implements FilamentUser
     {
         return $this->belongsToMany(Role::class);
     }
-}
+ */}

@@ -52,7 +52,11 @@ class ForecastController extends Controller
      */
     public function update(Request $request, Forecast $forecast)
     {
-        //
+        $forecast = Forecast::where('id', $request->id)->get();
+        $forecast->update([
+            'status' => 'In process',
+        ]);
+        $forecast->save();
     }
 
     /**

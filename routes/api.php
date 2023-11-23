@@ -28,6 +28,6 @@ Route::name('api.')->group(
 
         Route::post('/container/update/{id}', 'ContainerController@update')->name('container.update');
         Route::post('/delivery/store', 'DeliverControllery@store')->name('delivery.store');
-        Route::post('/forecast/delete/{id}', 'ForecastController@destroy')->name('forecast.delete');
+        Route::post('/forecast/update/{id}', 'ForecastController@update')->name('forecast.update');
     }
 );

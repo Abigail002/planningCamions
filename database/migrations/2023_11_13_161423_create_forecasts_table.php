@@ -24,6 +24,7 @@ return new class extends Migration
             $table->date('loadDate');
             $table->string('loadPlace');
             $table->string('deliveryPlace');
+            $table->string('status')->default('Pending');
 
             $table->foreignId('customer_id')->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
