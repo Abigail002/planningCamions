@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
 {
@@ -69,4 +70,24 @@ class UserController extends Controller
         })->pluck('name', 'id');
     }
 
+    public function send()
+    {
+        $data = [
+            'recipient' => 'abigailameogno@gmail.com',
+            'fromEmail' => 'medlog@fleet.com',
+            'subject' => 'medlog@fleet.com',
+        ];
+
+        Mail::send('emails.test', $data, function ($message) use($data) {
+            $message->from($data['recipient']);
+            //$message->sender('john@johndoe.com', 'John Doe');
+            $message->to($data['recipient']);
+            //$message->cc('john@johndoe.com', 'John Doe');
+            //$message->bcc('john@johndoe.com', 'John Doe');
+            //$message->replyTo('john@johndoe.com', 'John Doe');
+            $message->subject('Subject');
+            $message->priority(3);
+            //$message->attach('pathToFile');
+        });
+    }
 }
