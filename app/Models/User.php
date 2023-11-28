@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Events\UserCreated;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -51,7 +52,6 @@ class User extends Authenticatable implements FilamentUser
 
     public function canAccessPanel(Panel $panel): bool
     {
-        //return $this->hasRole('Admin');
         return str_ends_with($this->email, '@medlog.com');
     }
 
@@ -64,12 +64,11 @@ class User extends Authenticatable implements FilamentUser
     {
         return $this->hasMany(Container::class);
     }
-/*     public function hasAnyRole(array $roles)
+
+    protected static function booted(): void
     {
-        return $this->roles()->whereIn('name', $roles)->exists();
+        static::created(function (User $user) {
+            event(new UserCreated($user));
+        });
     }
-    public function roles()
-    {
-        return $this->belongsToMany(Role::class);
-    }
- */}
+}
