@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Container;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -65,9 +66,33 @@ class UserController extends Controller
     }
     public static function getDriversList()
     {
-        return User::whereHas('roles', function ($query) {
+        return function ($query) {
+            $query->whereHas('roles', function ($subQuery) {
+                $subQuery->where('name', 'Driver');
+            });
+        };
+    }
+    public static function getDriversFreeList()
+    {
+        $users = User::whereHas('roles', function ($query) {
             $query->where('name', 'Driver');
         })->pluck('name', 'id');
+
+        $userArray = $users->all();
+
+        // Récupérer les IDs des utilisateurs depuis le tableau
+        $userIds = array_keys($userArray);
+        $userArray = $users->all();
+
+        // Récupérer les IDs des utilisateurs depuis le tableau
+        $userIds = array_keys($userArray);
+
+        // Requête Eloquent pour vérifier les clés étrangères
+        $containersWithMatchingDrivers = Container::where('status', ['Pending', 'Delivered'])
+            ->whereIn('user_id', $userIds)
+            ->get();
+
+        return $containersWithMatchingDrivers;
     }
 
     public function send()
@@ -78,7 +103,7 @@ class UserController extends Controller
             'subject' => 'medlog@fleet.com',
         ];
 
-        Mail::send('emails.test', $data, function ($message) use($data) {
+        Mail::send('emails.test', $data, function ($message) use ($data) {
             $message->from($data['recipient']);
             //$message->sender('john@johndoe.com', 'John Doe');
             $message->to($data['recipient']);

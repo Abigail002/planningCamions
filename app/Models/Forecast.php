@@ -48,6 +48,10 @@ class Forecast extends Model
     {
         return self::whereDate('forecastDate', Carbon::today())->count();
     }
+    public static function countDeliveries()
+    {
+        return self::whereDate('status', 'In progress')->count();
+    }
 
     public static function countForecastsThisWeek()
     {

@@ -28,7 +28,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
-            ->brandName('MEDLOG FLEET')
+            ->brandName("MEDLOG'S TMS")
             ->colors([
                 'primary' => Color::Amber,
                 'primary' => "#F2BB16",

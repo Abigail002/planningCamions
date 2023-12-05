@@ -54,7 +54,7 @@ class ForecastController extends Controller
     {
         $forecast = Forecast::where('id', $request->id)->get();
         $forecast->update([
-            'status' => 'In process',
+            'status' => 'In progress',
         ]);
         $forecast->save();
     }

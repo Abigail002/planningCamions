@@ -21,7 +21,11 @@ class ForecastNews extends BaseWidget
                 ->description(Forecast::countForecastsThisWeek() . ' forecasts this week. Get trucks ready')
                 ->descriptionIcon('heroicon-m-exclamation-triangle')
                 ->color('primary'),
-
+            Stat::make('Deliveries in progress', Forecast::countDeliveries())
+                ->icon('heroicon-o-truck')
+                ->description(Forecast::countDeliveries())
+                ->descriptionIcon('heroicon-m-exclamation-triangle')
+                ->color('primary'),
         ];
     }
 }
