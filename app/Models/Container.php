@@ -24,7 +24,7 @@ class Container extends Model
         'loading_file_id'
     ];
 
-    public function type(): BelongsTo
+    public function containerType(): BelongsTo
     {
         return $this->belongsTo(ContainerType::class);
     }
@@ -40,7 +40,7 @@ class Container extends Model
     {
         return $this->belongsTo(Trailer::class);
     }
-    public function driver(): BelongsTo
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }

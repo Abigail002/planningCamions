@@ -72,6 +72,19 @@ class UserController extends Controller
             });
         };
     }
+    public static function getDriversListArray()
+    {
+        // Exécute la requête Eloquent
+        $results = User::whereHas('roles', function ($subQuery) {
+            $subQuery->where('name', 'Driver');
+        })->get(['id', 'name']);
+
+        // Transforme la collection en un tableau associatif
+        $driversArray = $results->pluck('name', 'id')->toArray();
+
+        return $driversArray;
+    }
+
     public static function getDriversFreeList()
     {
         $users = User::whereHas('roles', function ($query) {

@@ -67,7 +67,8 @@ class ContainersRelationManager extends RelationManager
                             ->native(false)
                             ->searchable()
                             ->preload()
-                            ->required()
+                            //->required()
+                            ->default(null)
                             ->createOptionForm([
                                 Forms\Components\TextInput::make('number')
                                     ->required()
@@ -76,9 +77,10 @@ class ContainersRelationManager extends RelationManager
                         Forms\Components\Select::make('trailer_id')
                             ->relationship('Trailer', 'number')
                             ->native(false)
+                            ->default(null)
                             ->searchable()
                             ->preload()
-                            ->required()
+                            //->required()
                             ->createOptionForm([
                                 Forms\Components\TextInput::make('number')
                                     ->required()
@@ -91,8 +93,9 @@ class ContainersRelationManager extends RelationManager
                             ->label('Driver')
                             ->native(false)
                             ->searchable()
+                            ->default(null)
                             ->preload()
-                            ->options(fn () => UserController::getDriversList()),
+                            ->options(fn () => UserController::getDriversListArray()),
                     ])->columns(3),
 
             ]);

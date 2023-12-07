@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\Truck;
+use App\Models\Trailer;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
-class TruckPolicy
+class TrailerPolicy
 {
     /**
      * Determine whether the user can view any models.
@@ -19,7 +19,7 @@ class TruckPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Truck $truck): bool
+    public function view(User $user, Trailer $trailer): bool
     {
         return $user->hasRole(['Admin', 'OperationOfficer']);
     }
@@ -35,7 +35,7 @@ class TruckPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Truck $truck): bool
+    public function update(User $user, Trailer $trailer): bool
     {
         return $user->hasRole(['Admin', 'OperationOfficer']);
     }
@@ -43,7 +43,7 @@ class TruckPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Truck $truck): bool
+    public function delete(User $user, Trailer $trailer): bool
     {
         return $user->hasRole(['Admin', 'OperationOfficer']);
     }
@@ -51,7 +51,7 @@ class TruckPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Truck $truck): bool
+    public function restore(User $user, Trailer $trailer): bool
     {
         return $user->hasRole(['Admin', 'OperationOfficer']);
     }
@@ -59,7 +59,7 @@ class TruckPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Truck $truck): bool
+    public function forceDelete(User $user, Trailer $trailer): bool
     {
         return $user->hasRole(['Admin', 'OperationOfficer']);
     }
