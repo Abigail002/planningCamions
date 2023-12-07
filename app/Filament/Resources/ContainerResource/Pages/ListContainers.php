@@ -23,6 +23,8 @@ class ListContainers extends ListRecords
         return['all' => Tab::make(),
         'Pending' => Tab::make()
             ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 'Pending')),
+        'Waiting for the driver' => Tab::make()
+            ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 'Waiting for the driver')),
         'In progress' => Tab::make()
             ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 'In progress')),
         'Delivered' => Tab::make()

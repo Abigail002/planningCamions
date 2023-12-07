@@ -35,7 +35,8 @@ class UserResource extends Resource
                     ->maxLength(255),
                 Forms\Components\TextInput::make('password')
                     ->password()
-                    ->default("password"),
+                    ->default("password")
+                    ->visibleOn('create'),
                 Forms\Components\Select::make('roles')
                     ->relationship('roles', 'name')
                     ->native(false)

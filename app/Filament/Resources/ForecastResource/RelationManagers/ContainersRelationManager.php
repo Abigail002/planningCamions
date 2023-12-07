@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\ForecastResource\RelationManagers;
 
 use App\Http\Controllers\UserController;
+use App\Models\Container;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -67,7 +68,12 @@ class ContainersRelationManager extends RelationManager
                             ->native(false)
                             ->searchable()
                             ->preload()
-                            ->required()
+                            ->afterStateUpdated(function (string $operation, Container $container) {
+                                if ($operation === "edit") {
+                                    $container->status = 'Waiting for the driver';
+                                }
+                            })
+                            ->default(null)
                             ->createOptionForm([
                                 Forms\Components\TextInput::make('number')
                                     ->required()
@@ -76,9 +82,14 @@ class ContainersRelationManager extends RelationManager
                         Forms\Components\Select::make('trailer_id')
                             ->relationship('Trailer', 'number')
                             ->native(false)
+                            ->default(null)
                             ->searchable()
                             ->preload()
-                            ->required()
+                            ->afterStateUpdated(function (string $operation, Container $container) {
+                                if ($operation === "edit") {
+                                    $container->status = 'Waiting for the driver';
+                                }
+                            })
                             ->createOptionForm([
                                 Forms\Components\TextInput::make('number')
                                     ->required()
@@ -90,9 +101,15 @@ class ContainersRelationManager extends RelationManager
                         Forms\Components\Select::make('user_id')
                             ->label('Driver')
                             ->native(false)
+                            ->afterStateUpdated(function (string $operation, Container $container) {
+                                if ($operation === "edit") {
+                                    $container->status = 'Waiting for the driver';
+                                }
+                            })
                             ->searchable()
+                            ->default(null)
                             ->preload()
-                            ->options(fn () => UserController::getDriversList()),
+                            ->options(fn () => UserController::getDriversListArray()),
                     ])->columns(3),
 
             ]);
@@ -103,8 +120,34 @@ class ContainersRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('number')
             ->columns([
-                Tables\Columns\TextColumn::make('number'),
-
+                Tables\Columns\TextColumn::make('status')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('containerType.length')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('truck.number')
+                    ->label('Tractor')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('trailer.number')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('user.name')
+                    ->label('Driver')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('loading_file_id')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('number')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('weight')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('workOrder')
+                    ->numeric()
+                    ->sortable(),
             ])
             ->filters([
                 //

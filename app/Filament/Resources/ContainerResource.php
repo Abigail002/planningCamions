@@ -6,6 +6,7 @@ use App\Filament\Resources\ContainerResource\Pages;
 use App\Filament\Resources\ContainerResource\RelationManagers;
 use App\Http\Controllers\UserController;
 use App\Models\Container;
+use App\Models\ContainerType;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -28,7 +29,7 @@ class ContainerResource extends Resource
             ->schema([
                 Forms\Components\Section::make('Properties')
                     ->description('Container properties')
-                    ->hidden(fn (User $user) => $user->role == 'CoordinationOfficer')
+                    ->hidden(fn (User $user) => $user->role !== 'CoordinationOfficer')
                     ->icon('heroicon-o-cube')
                     ->schema([
                         Forms\Components\TextInput::make('number')
@@ -63,7 +64,7 @@ class ContainerResource extends Resource
                     ])->columns(2),
                 Forms\Components\Section::make('Forecast')
                     ->description('Select the forecast associated')
-                    ->hidden(fn (User $user) => $user->role == 'CoordinationOfficer')
+                    ->hidden(fn (User $user) => $user->role !== 'CoordinationOfficer')
                     ->icon('heroicon-m-shopping-bag')
                     ->schema([
                         Forms\Components\Select::make('forecast_id')
@@ -78,13 +79,19 @@ class ContainerResource extends Resource
                     ]),
                 Forms\Components\Section::make('Driver et truck')
                     ->description('Select the driver in charge of the delivery and the truck')
-                    ->hidden(fn (User $user) => $user->role !== 'CoordinationOfficer')
+                    ->hidden(fn (User $user) => $user->role == 'CoordinationOfficer')
                     ->icon('heroicon-o-user')
                     ->schema([
                         Forms\Components\Select::make('truck_id')
                             ->relationship('truck', 'number')
                             ->native(false)
                             ->searchable()
+                            ->afterStateUpdated(function (string $operation, Container $container) {
+                                if ($operation === "edit") {
+                                    $container->status = 'Waiting for the driver';
+                                    
+                                }
+                            })
                             ->preload()
                             ->required()
                             ->createOptionForm([
@@ -95,6 +102,11 @@ class ContainerResource extends Resource
                         Forms\Components\Select::make('trailer_id')
                             ->relationship('Trailer', 'number')
                             ->native(false)
+                            ->afterStateUpdated(function (string $operation, Container $container) {
+                                if ($operation === "edit") {
+                                    $container->status = 'Waiting for the driver';
+                                }
+                            })
                             ->searchable()
                             ->preload()
                             ->required()
@@ -107,11 +119,15 @@ class ContainerResource extends Resource
                                     ->maxLength(255),
                             ]),
                         Forms\Components\Select::make('user_id')
-                            ->label('Driver')
                             ->native(false)
+                            ->afterStateUpdated(function (string $operation, Container $container) {
+                                if ($operation === "edit") {
+                                    $container->status = 'Waiting for the driver';
+                                }
+                            })
                             ->searchable()
                             ->preload()
-                            ->options(fn () => UserController::getDriversList()),
+                            ->options(fn () => UserController::getDriversListArray()),
                     ])->columns(3),
             ]);
     }
@@ -120,19 +136,21 @@ class ContainerResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('container_type_id')
+                Tables\Columns\TextColumn::make('containerType.length')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('forecast.id')
+                Tables\Columns\TextColumn::make('forecast.BL')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('truck.id')
+                Tables\Columns\TextColumn::make('truck.number')
+                    ->label('Tractor')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('trailer.id')
+                Tables\Columns\TextColumn::make('trailer.number')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('user_id')
+                Tables\Columns\TextColumn::make('user.name')
+                    ->label('Driver')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('loading_file_id')
