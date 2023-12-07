@@ -29,7 +29,7 @@ class ContainerResource extends Resource
             ->schema([
                 Forms\Components\Section::make('Properties')
                     ->description('Container properties')
-                    ->hidden(fn (User $user) => $user->role == 'CoordinationOfficer')
+                    ->hidden(fn (User $user) => $user->role !== 'CoordinationOfficer')
                     ->icon('heroicon-o-cube')
                     ->schema([
                         Forms\Components\TextInput::make('number')
@@ -86,6 +86,12 @@ class ContainerResource extends Resource
                             ->relationship('truck', 'number')
                             ->native(false)
                             ->searchable()
+                            ->afterStateUpdated(function (string $operation, Container $container) {
+                                if ($operation === "edit") {
+                                    $container->status = 'Waiting for the driver';
+                                    
+                                }
+                            })
                             ->preload()
                             ->required()
                             ->createOptionForm([
@@ -96,6 +102,11 @@ class ContainerResource extends Resource
                         Forms\Components\Select::make('trailer_id')
                             ->relationship('Trailer', 'number')
                             ->native(false)
+                            ->afterStateUpdated(function (string $operation, Container $container) {
+                                if ($operation === "edit") {
+                                    $container->status = 'Waiting for the driver';
+                                }
+                            })
                             ->searchable()
                             ->preload()
                             ->required()
@@ -109,6 +120,11 @@ class ContainerResource extends Resource
                             ]),
                         Forms\Components\Select::make('user_id')
                             ->native(false)
+                            ->afterStateUpdated(function (string $operation, Container $container) {
+                                if ($operation === "edit") {
+                                    $container->status = 'Waiting for the driver';
+                                }
+                            })
                             ->searchable()
                             ->preload()
                             ->options(fn () => UserController::getDriversListArray()),
@@ -127,12 +143,14 @@ class ContainerResource extends Resource
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('truck.number')
+                    ->label('Tractor')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('trailer.number')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('user.name')
+                    ->label('Driver')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('loading_file_id')
