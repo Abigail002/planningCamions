@@ -134,4 +134,11 @@ class UserController extends Controller
             //$message->attach('pathToFile');
         });
     }
+
+    //Vérification du rôle des users
+    public static function coordinationUsers(User $user){
+        //$user = User::find($user);
+        if($user->hasRole('CoordinationOfficer')) return false;
+        else return true;
+    }
 }

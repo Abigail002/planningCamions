@@ -27,8 +27,8 @@ class ListForecasts extends ListRecords
                 ->modifyQueryUsing(fn (Builder $query) => $query->whereDate('forecastDate', Carbon::today())),
             'This Week Forecasts' => Tab::make()
                 ->modifyQueryUsing(fn (Builder $query) => $query->whereBetween('forecastDate', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])),
-            'In process' => Tab::make()
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 'In process')),
+            'In progress' => Tab::make()
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 'In progress')),
             'Delivered' => Tab::make()
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 'Delivered')),
         ];

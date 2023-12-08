@@ -64,6 +64,10 @@ class User extends Authenticatable implements FilamentUser
     {
         return $this->hasMany(Container::class);
     }
+    public function missions(): HasMany
+    {
+        return $this->hasMany(Mission::class);
+    }
 
     protected static function booted(): void
     {

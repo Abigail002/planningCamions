@@ -27,7 +27,7 @@ class ContainerResource extends Resource
             ->schema([
                 Forms\Components\Section::make('Properties')
                     ->description('Container properties')
-                    ->hidden(fn (User $user) => Auth::user()->role == 'CoordinationOfficer')
+                    ->hidden(UserController::coordinationUsers(Auth::user()))
                     ->icon('heroicon-o-cube')
                     ->schema([
                         Forms\Components\TextInput::make('number')
@@ -62,7 +62,7 @@ class ContainerResource extends Resource
                     ])->columns(2),
                 Forms\Components\Section::make('Forecast')
                     ->description('Select the forecast associated')
-                    ->hidden(fn (User $user) => $user->role == 'CoordinationOfficer')
+                    ->hidden(UserController::coordinationUsers(Auth::user()))
                     ->icon('heroicon-m-shopping-bag')
                     ->schema([
                         Forms\Components\Select::make('forecast_id')
@@ -78,7 +78,7 @@ class ContainerResource extends Resource
                     ]),
                 Forms\Components\Section::make('Driver et truck')
                     ->description('Select the driver in charge of the delivery and the truck')
-                    ->hidden(fn (User $user) => $user->role == 'CoordinationOfficer')
+                    ->hidden(!UserController::coordinationUsers(Auth::user()))
                     ->icon('heroicon-o-user')
                     ->schema([
                         Forms\Components\Select::make('truck_id')
@@ -92,9 +92,6 @@ class ContainerResource extends Resource
                             ->afterStateUpdated(function (string $operation,User $user, Container $container, Forms\Get $get) {
                                 if ($operation === "edit") {
                                     $container->status = 'Waiting for the driver';
-                                    $get('truck_id');
-                                    dump($get('truck_id'));
-                                    dump(Filament::getNameForDefaultAvatar($user));
                                 }
                             })
                             ->preload()
