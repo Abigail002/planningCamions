@@ -10,6 +10,7 @@ use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Support\Enums\FontFamily;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
@@ -26,7 +27,7 @@ class ContainersRelationManager extends RelationManager
                     ->description('Container properties')
                     ->icon('heroicon-o-cube')
                     //->hidden(!auth()->user()->is_CoordinationOfficer)
-                    ->hidden(fn (User $user) => $user->role !== 'CoordinationOfficer')
+                    ->hidden(fn (User $user) => $user->role == 'CoordinationOfficer')
                     ->schema([
                         Forms\Components\TextInput::make('number')
                             ->required()
@@ -60,7 +61,7 @@ class ContainersRelationManager extends RelationManager
                     ])->columns(2),
                 Forms\Components\Section::make('Driver et truck')
                     ->description('Select the driver in charge of the delivery and the truck')
-                    ->hidden(fn (User $user) => $user->role == 'CoordinationOfficer')
+                    ->hidden(fn (User $user) => $user->role !== 'CoordinationOfficer')
                     ->icon('heroicon-o-user')
                     ->schema([
                         Forms\Components\Select::make('truck_id')
@@ -122,6 +123,8 @@ class ContainersRelationManager extends RelationManager
             ->columns([
                 Tables\Columns\TextColumn::make('status')
                     ->numeric()
+                    ->fontFamily(FontFamily::Mono)
+                    ->color('primary')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('containerType.length')
                     ->numeric()

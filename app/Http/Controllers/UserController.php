@@ -101,11 +101,17 @@ class UserController extends Controller
         $userIds = array_keys($userArray);
 
         // Requête Eloquent pour vérifier les clés étrangères
-        $containersWithMatchingDrivers = Container::where('status', ['Pending', 'Delivered'])
+        $containersWithMatchingDrivers = Container::where('status', 'Busy')
             ->whereIn('user_id', $userIds)
             ->get();
 
         return $containersWithMatchingDrivers;
+    }
+
+    public function editStatus(User $user)
+    {
+        $user = User::where('id', $user->id)->get();
+        $user->status = '';
     }
 
     public function send()

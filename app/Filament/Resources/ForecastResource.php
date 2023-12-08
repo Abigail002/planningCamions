@@ -45,10 +45,10 @@ class ForecastResource extends Resource
                             ]),
                         Forms\Components\TextInput::make('user_name')
                             ->label("Responsible person")
-                            ->default( Auth::user()->name)
+                            ->default(Auth::user()->name)
                             ->readonly(),
                         Forms\Components\Hidden::make('user_id')
-                            ->default( Auth::user()->id)
+                            ->default(Auth::user()->id)
                             ->required(),
                     ])->columns(2),
                 Forms\Components\Section::make('Properties')
@@ -70,6 +70,7 @@ class ForecastResource extends Resource
                             ->required()
                             ->maxLength(255),
                         Forms\Components\TextInput::make('numbTruck')
+                            ->label("Number of truck needed")
                             ->required()
                             ->numeric(),
                         Forms\Components\TextInput::make('idTrakit')
@@ -100,14 +101,14 @@ class ForecastResource extends Resource
                             ->native(false)
                             ->required(),
                         Forms\Components\Select::make('loadPlace')
-                        ->options([
-                            'LCT' => 'LCT',
-                            'PAL' => 'PAL',
-                        ])
-                        ->native(false)
-                        ->searchable()
-                        ->preload()
-                        ->required(),
+                            ->options([
+                                'LCT' => 'LCT',
+                                'PAL' => 'PAL',
+                            ])
+                            ->native(false)
+                            ->searchable()
+                            ->preload()
+                            ->required(),
                         Forms\Components\TextInput::make('deliveryPlace')
                             ->required()
                             ->maxLength(255),
