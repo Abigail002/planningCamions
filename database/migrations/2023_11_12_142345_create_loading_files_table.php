@@ -13,21 +13,22 @@ return new class extends Migration
     {
         Schema::create('loading_files', function (Blueprint $table) {
             $table->id();
-            $table->dateTime('departCFS');
-            $table->dateTime('entreeGate3');
-            $table->dateTime('arriveeGate10');
-            $table->dateTime('passageGate10');
-            $table->dateTime('chargementTC');
-            $table->dateTime('passageScanner');
-            $table->dateTime('resultatScanner');
-            $table->dateTime('sortieDouane');
-            $table->dateTime('sortieGate3');
-            $table->dateTime('arriveeClient');
-            $table->dateTime('debutDehargement');
-            $table->dateTime('finDechargement');
-            $table->dateTime('departClient');
-            $table->dateTime('arriveeGate3');
-            $table->dateTime('arriveeCFS');
+            $table->dateTime('departCFS')->nullable();
+            $table->dateTime('entreeGate3')->nullable();
+            $table->dateTime('arriveeGate10')->nullable();
+            $table->dateTime('passageGate10')->nullable();
+            $table->dateTime('chargementTC1')->nullable();
+            $table->dateTime('chargementTC2')->nullable();
+            $table->dateTime('passageScanner')->nullable();
+            $table->dateTime('resultatScanner')->nullable();
+            $table->dateTime('sortieDouane')->nullable();
+            $table->dateTime('sortieGate3')->nullable();
+            $table->dateTime('arriveeClient')->nullable();
+            $table->dateTime('debutDehargement')->nullable();
+            $table->dateTime('finDechargement')->nullable();
+            $table->dateTime('departClient')->nullable();
+            $table->dateTime('arriveeGate3')->nullable();
+            $table->dateTime('arriveeCFS')->nullable();
             $table->timestamps();
         });
     }

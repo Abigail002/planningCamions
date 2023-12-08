@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('contact')->default('99367802');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('status')->default('Free');
             $table->rememberToken();
             $table->timestamps();
         });

@@ -94,7 +94,7 @@ class ContainerController extends Controller
     {
         $container = Container::where('forecast_id', $container->forecast_id)->get();
         $container->update([
-            'status' => 'In process',
+            'status' => 'In progress',
         ]);
         $container->save();
         return redirect()->route('forecast.update', ['id' => $container->forecast_id]);

@@ -1,20 +1,18 @@
 <?php
 
 namespace App\Filament\Resources;
-
 use App\Filament\Resources\ContainerResource\Pages;
-use App\Filament\Resources\ContainerResource\RelationManagers;
 use App\Http\Controllers\UserController;
 use App\Models\Container;
-use App\Models\ContainerType;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Auth;
+use Filament\Facades\Filament;
+
 
 class ContainerResource extends Resource
 {
@@ -29,7 +27,7 @@ class ContainerResource extends Resource
             ->schema([
                 Forms\Components\Section::make('Properties')
                     ->description('Container properties')
-                    ->hidden(fn (User $user) => $user->role !== 'CoordinationOfficer')
+                    ->hidden(UserController::coordinationUsers(Auth::user()))
                     ->icon('heroicon-o-cube')
                     ->schema([
                         Forms\Components\TextInput::make('number')
@@ -64,7 +62,7 @@ class ContainerResource extends Resource
                     ])->columns(2),
                 Forms\Components\Section::make('Forecast')
                     ->description('Select the forecast associated')
-                    ->hidden(fn (User $user) => $user->role !== 'CoordinationOfficer')
+                    ->hidden(UserController::coordinationUsers(Auth::user()))
                     ->icon('heroicon-m-shopping-bag')
                     ->schema([
                         Forms\Components\Select::make('forecast_id')
@@ -72,24 +70,28 @@ class ContainerResource extends Resource
                             ->native(false)
                             ->searchable()
                             ->preload()
-                            ->required()->options(fn () => \App\Models\Forecast::pluck('BL', 'id')->mapWithKeys(function ($BL, $id) {
+                            ->required()
+                            ->options(fn () => \App\Models\Forecast::pluck('BL', 'id')->mapWithKeys(function ($BL, $id) {
                                 $forecast = \App\Models\Forecast::find($id);
                                 return [$id => "{$forecast->operation} - {$forecast->customer->name} - {$BL}"];
                             })),
                     ]),
                 Forms\Components\Section::make('Driver et truck')
                     ->description('Select the driver in charge of the delivery and the truck')
-                    ->hidden(fn (User $user) => $user->role == 'CoordinationOfficer')
+                    ->hidden(!UserController::coordinationUsers(Auth::user()))
                     ->icon('heroicon-o-user')
                     ->schema([
                         Forms\Components\Select::make('truck_id')
                             ->relationship('truck', 'number')
                             ->native(false)
+                            ->options(fn () => \App\Models\Truck::pluck('number', 'id')->mapWithKeys(function ($number, $id) {
+                                $truck = \App\Models\Truck::find($id);
+                                return [$id => "{$truck->number} - {$truck->status}"];
+                            }))
                             ->searchable()
-                            ->afterStateUpdated(function (string $operation, Container $container) {
+                            ->afterStateUpdated(function (string $operation,User $user, Container $container, Forms\Get $get) {
                                 if ($operation === "edit") {
                                     $container->status = 'Waiting for the driver';
-                                    
                                 }
                             })
                             ->preload()
@@ -108,6 +110,10 @@ class ContainerResource extends Resource
                                 }
                             })
                             ->searchable()
+                            ->options(fn () => \App\Models\Trailer::pluck('number', 'id')->mapWithKeys(function ($number, $id) {
+                                $trailer = \App\Models\Trailer::find($id);
+                                return [$id => "{$trailer->number} - {$trailer->length} - {$trailer->status}"];
+                            }))
                             ->preload()
                             ->required()
                             ->createOptionForm([

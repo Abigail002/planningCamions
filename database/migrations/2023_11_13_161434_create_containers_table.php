@@ -18,12 +18,12 @@ return new class extends Migration
             $table->integer('workOrder');
             $table->string('status')->default('Pending');
 
-            $table->foreignId('container_type_id')->constrained()->onDelete('cascade')->nullable();
-            $table->foreignId('forecast_id')->constrained()->onDelete('cascade')->nullable();
-            $table->foreignId('truck_id')->constrained()->onDelete('cascade')->nullable();
-            $table->foreignId('trailer_id')->constrained()->onDelete('cascade')->nullable();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('loading_file_id')->constrained()->onDelete('cascade')->nullable();
+            $table->foreignId('container_type_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignId('forecast_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignId('truck_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignId('trailer_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignId('loading_file_id')->nullable()->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

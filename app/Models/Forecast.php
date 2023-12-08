@@ -44,6 +44,10 @@ class Forecast extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function missions(): HasMany
+    {
+        return $this->hasMany(Mission::class);
+    }
     public static function countTodayForecastsToday()
     {
         return self::whereDate('forecastDate', Carbon::today())->count();

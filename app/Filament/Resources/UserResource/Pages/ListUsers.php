@@ -35,6 +35,10 @@ class ListUsers extends ListRecords
             'All users' => Tab::make(),
             'Drivers' => Tab::make()
                 ->modifyQueryUsing($customQueryModifier),
+            'Free drivers' => Tab::make()
+                ->modifyQueryUsing($customQueryModifier),
+            'Busy drivers' => Tab::make()
+                ->modifyQueryUsing($customQueryModifier),
         ];
 
         // Condition pour masquer les onglets pour les non-administrateurs
