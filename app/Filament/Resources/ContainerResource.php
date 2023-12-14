@@ -14,8 +14,9 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Auth;
 use Filament\Facades\Filament;
+use Filament\Tables\Enums\ActionsPosition;
 use Illuminate\Support\Facades\Redirect;
-use PhpParser\Node\Stmt\Return_;
+use Filament\Support\Colors\Color;
 
 class ContainerResource extends Resource
 {
@@ -167,6 +168,15 @@ class ContainerResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('status')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'Pending' => 'danger',
+                        'In progress' => 'info',
+                        'Waiting for the driver' => 'info',
+                        'Delivered' => 'success',
+                    })
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('containerType.length')
                     ->numeric()
                     ->sortable(),
@@ -195,8 +205,6 @@ class ContainerResource extends Resource
                 Tables\Columns\TextColumn::make('workOrder')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('status')
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -210,9 +218,12 @@ class ContainerResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-            ])
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\ViewAction::make(),
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\DeleteAction::make(),
+                ])
+            ], position: ActionsPosition::BeforeCells)
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),

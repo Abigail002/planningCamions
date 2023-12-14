@@ -33,7 +33,7 @@ Route::name('api.')->group(
         Route::post('/container/status/{id}', [ContainerController::class, 'updateStatus'])->name('container.update.status');
         Route::post('/forecast/update/{id}', [ForecastController::class, 'update'])->name('forecast.update');
 
-        Route::get('/user/{id}', [MissionController::class, 'index'])->name('mission.add');
+        Route::get('/driver/{id}', [MissionController::class, 'index'])->name('mission.add');
         Route::post('/mission/add', [MissionController::class, 'store'])->name('mission.add');
     }
 );
