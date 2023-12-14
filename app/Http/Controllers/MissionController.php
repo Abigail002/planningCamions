@@ -6,16 +6,31 @@ use App\Models\Forecast;
 use App\Models\Mission;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class MissionController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index($driverId)
+    public function index($id)
     {
-        $missions = Mission::where('user_id', $driverId)->get();
-        return $missions;
+        try {
+            $user = User::find($id);
+
+            if ($user) {
+                $missions = Mission::where('user_id', $user->id)->get();
+                return $missions;
+            } else {
+                return "User not found";
+            }
+        } catch (\Exception $e) {
+            // Log the error details
+            error_log("Error in index method: " . $e->getMessage());
+
+            // Return a generic error message
+            return "An error occurred. Please check the logs for more details.";
+        }
     }
 
     /**
@@ -32,13 +47,14 @@ class MissionController extends Controller
     public function store(Request $request)
     {
         $mission = new Mission();
-
         $mission->forecast_id = $request->input('forecast_id');
         $mission->user_id = $request->input('user_id');
         $mission->truck = $request->input('truck');
-        $mission->trailer = $request->input('trailer');
+        $mission->trailer  = $request->input('trailer');
 
-        $missionExist = Mission::where('forecast_id', $mission->forecast_id)->get();
+        $ListMission = Mission::where('forecast_id', $mission->forecast_id)
+            ->where('user_id', '=', $mission->user_id)
+            ->get()->first();
 
         //Récupération du nom d chauffeur assigné à la livraison
         $name = User::find($mission->user_id);
@@ -47,23 +63,26 @@ class MissionController extends Controller
         //Récupération des informations de la prévision
         $forecast = Forecast::find($mission->forecast_id);
         $date = \Carbon\Carbon::parse($forecast->forecastDate)->format('d-m-Y');
-        $customer = $forecast->customer()->name;
+        $customer = $forecast->customer->name;
 
-        if (!$missionExist) {
+        if (!$ListMission) {
             $mission->TC1 = $request->input('TC');
 
-            $mission->description = "Bonjour " + $name + ". Vous avez été assigné à une livraison de "
-                + $customer + " prévu le "
-                + $date + " à charger au port " + $forecast->loadPlace + ". \nNuméro TC: " + $mission->TC1;
+            $mission->description = nl2br("Bonjour " . $name . ". Vous avez été assigné à une livraison de "
+                . $customer . " prévu le "
+                . $date . " à charger au port " . $forecast->loadPlace . ". \nNuméro TC: " . $mission->TC1);
 
             $mission->save();
+            return $mission;
         } else {
             $TC = $request->input('TC');
-            $mission->description = "Bonjour " + $name + ". Vous avez été assigné à une livraison de "
-                + $customer + " prévu le "
-                + $date + " à charger au port " + $forecast->loadPlace + ". Numéros TC: " + $mission->TC1 + " et " + $mission->TC2;
+            $ListMission->TC2 = $TC;
+            $ListMission->description = nl2br("Bonjour " . $name . ". Vous avez été assigné à une livraison de "
+                . $customer . " prévu le "
+                . $date . " à charger au port " . $forecast->loadPlace . ". \nNuméros TC: " . $ListMission->TC1 . " et " . $ListMission->TC2);
 
-            return $this->addTC($TC, $missionExist, $mission->description);
+            $ListMission->save();
+            return $ListMission;
         }
     }
 
@@ -97,14 +116,5 @@ class MissionController extends Controller
     public function destroy(Mission $mission)
     {
         $mission->delete();
-    }
-    public function addTC($TC, Mission $mission, $description)
-    {
-        $mission = Mission::find($mission);
-        $mission->TC2 = $TC;
-        $mission->description = $description;
-
-        $mission->save();
-        return 'updated with successfull';
     }
 }

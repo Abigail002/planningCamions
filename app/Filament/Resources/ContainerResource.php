@@ -1,7 +1,9 @@
 <?php
 
 namespace App\Filament\Resources;
+
 use App\Filament\Resources\ContainerResource\Pages;
+use App\Http\Controllers\MissionController;
 use App\Http\Controllers\UserController;
 use App\Models\Container;
 use App\Models\User;
@@ -12,7 +14,8 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Auth;
 use Filament\Facades\Filament;
-
+use Illuminate\Support\Facades\Redirect;
+use PhpParser\Node\Stmt\Return_;
 
 class ContainerResource extends Resource
 {
@@ -89,9 +92,15 @@ class ContainerResource extends Resource
                                 return [$id => "{$truck->number} - {$truck->status}"];
                             }))
                             ->searchable()
-                            ->afterStateUpdated(function (string $operation,User $user, Container $container, Forms\Get $get) {
+                            ->afterStateUpdated(function (string $operation, User $user, Container $container, Forms\Get $get) {
                                 if ($operation === "edit") {
-                                    $container->status = 'Waiting for the driver';
+                                    return route('api.mission.add', [
+                                        'user_id' => $get('user_id'),
+                                        'forecat_id' => $get('forecat_id'),
+                                        'trailer' => $get('trailer'),
+                                        'truck' => $get('truck'),
+                                        'TC' => $get('number'),
+                                    ]);
                                 }
                             })
                             ->preload()
@@ -104,9 +113,18 @@ class ContainerResource extends Resource
                         Forms\Components\Select::make('trailer_id')
                             ->relationship('Trailer', 'number')
                             ->native(false)
-                            ->afterStateUpdated(function (string $operation, Container $container) {
+                            ->afterStateUpdated(function (string $operation, User $user, Container $container, Forms\Get $get) {
                                 if ($operation === "edit") {
-                                    $container->status = 'Waiting for the driver';
+                                    //dd($get('number'));
+                                    return Redirect::to('api.mission.add', [
+                                        'user_id' => $get('user_id'),
+                                        'forecat_id' => $get('forecat_id'),
+                                        'trailer' => $get('trailer_id'),
+                                        'truck' => $get('truck_id'),
+                                        'TC' => $get('number'),
+                                    ], true);
+
+                                    //return dd($get('number'));
                                 }
                             })
                             ->searchable()
@@ -126,9 +144,16 @@ class ContainerResource extends Resource
                             ]),
                         Forms\Components\Select::make('user_id')
                             ->native(false)
-                            ->afterStateUpdated(function (string $operation, Container $container) {
+                            ->afterStateUpdated(function (string $operation, User $user, Container $container, Forms\Get $get) {
                                 if ($operation === "edit") {
                                     $container->status = 'Waiting for the driver';
+                                    return route('api.mission.add', [
+                                        'user_id' => $get('user_id'),
+                                        'forecat_id' => $get('forecat_id'),
+                                        'trailer' => $get('trailer'),
+                                        'truck' => $get('truck'),
+                                        'TC' => $get('number'),
+                                    ]);
                                 }
                             })
                             ->searchable()

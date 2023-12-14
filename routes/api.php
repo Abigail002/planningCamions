@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\Api\Auth\LoginController;
+use App\Http\Controllers\ContainerController;
+use App\Http\Controllers\ForecastController;
+use App\Http\Controllers\MissionController;
 use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -26,9 +29,11 @@ Route::name('api.')->group(
             Route::post('/login', LoginController::class)->name('login');
         });
 
-        Route::post('/container/update/{id}', 'ContainerController@update')->name('container.update');
-        Route::post('/delivery/store', 'DeliverControllery@store')->name('delivery.store');
-        Route::post('/forecast/update/{id}', 'ForecastController@update')->name('forecast.update');
-        Route::post('/user/send', 'UserController@send')->name('user.send');
+        Route::post('/container/update/{id}', [ContainerController::class, 'update'])->name('container.update');
+        Route::post('/container/status/{id}', [ContainerController::class, 'updateStatus'])->name('container.update.status');
+        Route::post('/forecast/update/{id}', [ForecastController::class, 'update'])->name('forecast.update');
+
+        Route::get('/user/{id}', [MissionController::class, 'index'])->name('mission.add');
+        Route::post('/mission/add', [MissionController::class, 'store'])->name('mission.add');
     }
 );

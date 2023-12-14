@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Container;
 use App\Models\Forecast;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 
 class ContainerController extends Controller
 {
@@ -53,12 +54,7 @@ class ContainerController extends Controller
      */
     public function update(Request $request, Container $container)
     {
-        $loading = $request->loading;
-
-        $container->update([
-            'loading_file_id' => $loading,
-            'status' => 'Delivered',
-        ]);
+        $container->status = 'Delivered';
         $container->save();
 
         $containers = Container::where('forecast_id', $container->forecast_id)->get();
@@ -66,7 +62,7 @@ class ContainerController extends Controller
         $allDelivered = true;
 
         foreach ($containers as $container) {
-            if ($container->status !== 'delivered') {
+            if ($container->status !== 'Delivered') {
                 $allDelivered = false;
                 break;
             }
@@ -75,12 +71,10 @@ class ContainerController extends Controller
         if($allDelivered == true)
         {
             $forecast = Forecast::where('id', $container->forecast_id)->get();
-            $forecast->update([
-                'status' => 'Delivered',
-            ]);
+            $forecast->status = 'Delivered';
             $forecast->save();
         }
-        else return 'File added to the container';
+        else return 'Container delivered';
     }
 
     /**
@@ -90,13 +84,17 @@ class ContainerController extends Controller
     {
         //
     }
-    public function updateStatus (Container $container)
+    public function updateStatus ($forecastId)
     {
-        $container = Container::where('forecast_id', $container->forecast_id)->get();
-        $container->update([
-            'status' => 'In progress',
-        ]);
+        $container = Container::where('forecast_id', $forecastId)->get()->first();
+        $status = nl2br("In progress");
+        $container->status = $status;
         $container->save();
-        return redirect()->route('forecast.update', ['id' => $container->forecast_id]);
+
+        $forecast = Forecast::where('id', $forecastId)->get()->first();
+        $forecast->status = 'In progress';
+        $forecast->save();
+
+        return $container;
     }
 }

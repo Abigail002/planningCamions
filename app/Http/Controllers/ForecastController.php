@@ -50,12 +50,11 @@ class ForecastController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Forecast $forecast)
+    public function update(Request $request)
     {
-        $forecast = Forecast::where('id', $request->id)->get();
-        $forecast->update([
-            'status' => 'In progress',
-        ]);
+        return 'Forecast in progress';
+        $forecast = Forecast::where('id', $request->id)->get()->first();
+        $forecast->status = 'In progress';
         $forecast->save();
     }
 

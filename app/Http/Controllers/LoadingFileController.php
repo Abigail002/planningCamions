@@ -30,7 +30,7 @@ class LoadingFileController extends Controller
      */
     public function store(Request $request)
     {
-        $loadingFile = New LoadingFile();
+        $loadingFile = new LoadingFile();
 
         $loadingFile->departCFS = $request->input('departCFS');
         $loadingFile->entreeGate3 = $request->input('entreeGate3');
@@ -50,8 +50,9 @@ class LoadingFileController extends Controller
         $loadingFile->save();
 
         $number = $request->input('container');
-        $container = Container::where('number', $number)->get();
-        return redirect()->route('container.update', ['id' => $container->id, 'loading' => $loadingFile->id]);
+        $container = Container::where('number', $number)->get()->first();
+        $container->loading_file_id = $loadingFile->id;
+        return "Ajouté avec succès";
     }
 
     /**
@@ -75,7 +76,26 @@ class LoadingFileController extends Controller
      */
     public function update(Request $request, LoadingFile $loadingFile)
     {
+        $loadingFile->departCFS = $request->input('departCFS');
+        $loadingFile->entreeGate3 = $request->input('entreeGate3');
+        $loadingFile->arriveeGate10 = $request->input('arriveeGate10');
+        $loadingFile->passageGate10 = $request->input('passageGate10');
+        $loadingFile->chargementTC = $request->input('chargementTC');
+        $loadingFile->passageScanner = $request->input('passageScanner');
+        $loadingFile->resultatScanner = $request->input('resultatScanner');
+        $loadingFile->sortieDouane = $request->input('sortieDouane');
+        $loadingFile->sortieGate3 = $request->input('sortieGate3');
+        $loadingFile->arriveeClient = $request->input('arriveeClient');
+        $loadingFile->debutDehargement = $request->input('debutDehargement');
+        $loadingFile->fintDehargement = $request->input('fintDehargement');
+        $loadingFile->departClient = $request->input('departClient');
+        $loadingFile->arriveeGate3 = $request->input('arriveeGate3');
+        $loadingFile->arriveeCFS = $request->input('arriveeCFS');
+        $loadingFile->save();
 
+        $number = $request->input('container');
+        $container = Container::where('number', $number)->get();
+        return redirect()->route('container.update', [ $container->id]);
     }
 
     /**
