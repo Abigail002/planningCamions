@@ -29,7 +29,6 @@ return new class extends Migration
             $table->dateTime('departClient')->nullable();
             $table->dateTime('arriveeGate3')->nullable();
             $table->dateTime('arriveeCFS')->nullable();
-            $table->timestamps();
         });
     }
 

@@ -52,10 +52,16 @@ class ContainerController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Container $container)
+    public function update(Request $request)
     {
-        $container->status = 'Delivered';
+        $container = Container::where('id', $request->input('TC1'))->get()->first();
+        $status = nl2br("Delivered");
+        $container->status = $status;
         $container->save();
+        $container1 = Container::where('id', $request->input('TC2'))->get()->first();
+        $status = nl2br("Delivered");
+        $container1->status = $status;
+        $container1->save();
 
         $containers = Container::where('forecast_id', $container->forecast_id)->get();
 
@@ -84,14 +90,18 @@ class ContainerController extends Controller
     {
         //
     }
-    public function updateStatus ($forecastId)
+    public function updateStatus (Request $request)
     {
-        $container = Container::where('forecast_id', $forecastId)->get()->first();
+        $container = Container::where('id', $request->input('TC1'))->get()->first();
         $status = nl2br("In progress");
         $container->status = $status;
         $container->save();
+        $container1 = Container::where('id', $request->input('TC2'))->get()->first();
+        $status = nl2br("In progress");
+        $container1->status = $status;
+        $container1->save();
 
-        $forecast = Forecast::where('id', $forecastId)->get()->first();
+        $forecast = Forecast::where('id', $container->forecast_id)->get()->first();
         $forecast->status = 'In progress';
         $forecast->save();
 

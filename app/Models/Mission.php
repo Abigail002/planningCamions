@@ -11,13 +11,13 @@ class Mission extends Model
     use HasFactory;
 
     protected $fillable = [
-        'forecast_id',
-        'TC1',
-        'TC2',
+        'driver_id',
         'user_id',
         'description',
         'truck',
         'trailer',
+        'first_container_id',
+        'second_container_id'
     ];
 
     public function driver(): BelongsTo

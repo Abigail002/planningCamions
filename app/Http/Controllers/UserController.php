@@ -77,32 +77,37 @@ class UserController extends Controller
         // Exécute la requête Eloquent
         $results = User::whereHas('roles', function ($subQuery) {
             $subQuery->where('name', 'Driver');
-        })->get(['id', 'name']);
+        })->get(['id', 'name', 'status']);
 
-        // Transforme la collection en un tableau associatif
-        $driversArray = $results->pluck('name', 'id')->toArray();
+        // Transforme la collection en un tableau associatif avec le statut inclus
+        $driversArray = $results->mapWithKeys(function ($user) {
+            // Formatte le nom de l'utilisateur avec le statut
+            $displayName = $user->name . '-' . $user->status;
 
+            return [$user->id => $displayName];
+        })->toArray();
         return $driversArray;
     }
 
     public static function getDriversFreeList()
     {
-        $users = User::whereHas('roles', function ($query) {
-            $query->where('name', 'Driver');
-        })->pluck('name', 'id');
+        // Exécute la requête Eloquent
+        $results = User::whereHas('roles', function ($subQuery) {
+            $subQuery->where('name', 'Driver');
+        })->get(['id', 'name']);
 
-        $userArray = $users->all();
-
-        // Récupérer les IDs des utilisateurs depuis le tableau
-        $userIds = array_keys($userArray);
-        $userArray = $users->all();
+        // Transforme la collection en un tableau associatif
+        $driversArray = $results->pluck('name', 'id')->toArray();
 
         // Récupérer les IDs des utilisateurs depuis le tableau
-        $userIds = array_keys($userArray);
+        $userIds = array_keys($driversArray);
+
+        // Récupérer les IDs des utilisateurs depuis le tableau
+        // $userIds = array_keys($userArray);
 
         // Requête Eloquent pour vérifier les clés étrangères
-        $containersWithMatchingDrivers = Container::where('status', 'Busy')
-            ->whereIn('user_id', $userIds)
+        $containersWithMatchingDrivers = User::where('status', 'Free')
+            ->whereIn('id', $userIds)
             ->get();
 
         return $containersWithMatchingDrivers;
@@ -136,9 +141,9 @@ class UserController extends Controller
     }
 
     //Vérification du rôle des users
-    public static function coordinationUsers(User $user){
-        //$user = User::find($user);
-        if($user->hasRole('CoordinationOfficer')) return false;
+    public static function coordinationUsers(User $user)
+    {
+        if ($user->hasRole('CoordinationOfficer')) return false;
         else return true;
     }
 }

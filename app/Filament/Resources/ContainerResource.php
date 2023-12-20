@@ -95,13 +95,13 @@ class ContainerResource extends Resource
                             ->searchable()
                             ->afterStateUpdated(function (string $operation, User $user, Container $container, Forms\Get $get) {
                                 if ($operation === "edit") {
-                                    return route('api.mission.add', [
+                                    /* return route('api.mission.add', [
                                         'user_id' => $get('user_id'),
                                         'forecat_id' => $get('forecat_id'),
                                         'trailer' => $get('trailer'),
                                         'truck' => $get('truck'),
                                         'TC' => $get('number'),
-                                    ]);
+                                    ]); */
                                 }
                             })
                             ->preload()
@@ -117,14 +117,14 @@ class ContainerResource extends Resource
                             ->afterStateUpdated(function (string $operation, User $user, Container $container, Forms\Get $get) {
                                 if ($operation === "edit") {
                                     //dd($get('number'));
-                                    return Redirect::to('api.mission.add', [
+                                    /* return Redirect::to('api.mission.add', [
                                         'user_id' => $get('user_id'),
                                         'forecat_id' => $get('forecat_id'),
                                         'trailer' => $get('trailer_id'),
                                         'truck' => $get('truck_id'),
                                         'TC' => $get('number'),
                                     ], true);
-
+ */
                                     //return dd($get('number'));
                                 }
                             })
@@ -148,13 +148,13 @@ class ContainerResource extends Resource
                             ->afterStateUpdated(function (string $operation, User $user, Container $container, Forms\Get $get) {
                                 if ($operation === "edit") {
                                     $container->status = 'Waiting for the driver';
-                                    return route('api.mission.add', [
+                                    /* return route('api.mission.add', [
                                         'user_id' => $get('user_id'),
                                         'forecat_id' => $get('forecat_id'),
                                         'trailer' => $get('trailer'),
                                         'truck' => $get('truck'),
                                         'TC' => $get('number'),
-                                    ]);
+                                    ]); */
                                 }
                             })
                             ->searchable()
@@ -194,6 +194,7 @@ class ContainerResource extends Resource
                     ->label('Driver')
                     ->numeric()
                     ->sortable(),
+                    //->url(fn (Container $record): string => route('mission.add', ['post' => $record])),
                 Tables\Columns\TextColumn::make('loading_file_id')
                     ->numeric()
                     ->sortable(),

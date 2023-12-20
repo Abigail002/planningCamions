@@ -25,7 +25,7 @@ class LoadingFile extends Model
         'finDechargement',
         'departClient',
         'arriveeGate3',
-        'arriveeCFS'
+        'arriveeCFS',
     ];
 
     public function containers(): HasMany
