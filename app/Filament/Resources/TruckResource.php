@@ -31,7 +31,7 @@ class TruckResource extends Resource
                     ->maxLength(255),
                 Forms\Components\Select::make('status')
                     ->options([
-                        'Not in use' => 'Not in use',
+                        'Not in use' => 'Free',
                         'In use' => 'In use',
                         'At the garage' => 'At the garage',
                     ])
@@ -49,8 +49,9 @@ class TruckResource extends Resource
                 Tables\Columns\TextColumn::make('number')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('status')
+                    ->badge()
                     ->color(fn (string $state): string => match ($state) {
-                        'Not in use' => 'success',
+                        'Free' => 'success',
                         'In use' => 'warning',
                         'At the garage' => 'danger',
                         default => 'gray',

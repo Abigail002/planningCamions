@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('number')->unique();
             $table->string('length');
-            $table->string('status')->default('free');
+            $table->string('status')->default('Free');
             $table->timestamps();
         });
     }
