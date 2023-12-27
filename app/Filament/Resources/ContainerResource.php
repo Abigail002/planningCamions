@@ -88,7 +88,7 @@ class ContainerResource extends Resource
                         Forms\Components\Select::make('truck_id')
                             ->relationship('truck', 'number')
                             ->native(false)
-                            ->options(fn () => \App\Models\Truck::pluck('number', 'id')->mapWithKeys(function ($number, $id) {
+                            ->options(fn () => \App\Models\Truck::pluck('id')->mapWithKeys(function ($id) {
                                 $truck = \App\Models\Truck::find($id);
                                 return [$id => "{$truck->number} - {$truck->status}"];
                             }))
@@ -129,7 +129,7 @@ class ContainerResource extends Resource
                                 }
                             })
                             ->searchable()
-                            ->options(fn () => \App\Models\Trailer::pluck('number', 'id')->mapWithKeys(function ($number, $id) {
+                            ->options(fn () => \App\Models\Trailer::pluck('id')->mapWithKeys(function ($id) {
                                 $trailer = \App\Models\Trailer::find($id);
                                 return [$id => "{$trailer->number} - {$trailer->length} - {$trailer->status}"];
                             }))
@@ -194,7 +194,6 @@ class ContainerResource extends Resource
                     ->label('Driver')
                     ->numeric()
                     ->sortable(),
-                    //->url(fn (Container $record): string => route('mission.add', ['post' => $record])),
                 Tables\Columns\TextColumn::make('loading_file_id')
                     ->numeric()
                     ->sortable(),

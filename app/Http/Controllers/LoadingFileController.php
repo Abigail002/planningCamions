@@ -56,10 +56,12 @@ class LoadingFileController extends Controller
             $container1->loading_file_id = $loadingFile->id;
             $container1->save();
 
-            $id2 = $request->input('TC2');
-            $container2 = Container::where('id', $id2)->get()->first();
-            $container2->loading_file_id = $loadingFile->id;
-            $container2->save();
+            if($request->input('TC2')){
+                $id2 = $request->input('TC2');
+                $container2 = Container::where('id', $id2)->get()->first();
+                $container2->loading_file_id = $loadingFile->id;
+                $container2->save();
+            }
             return $loadingFile;
         } catch (\Exception $e) {
             // Log the error details
