@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('trucks', function (Blueprint $table) {
             $table->id();
             $table->string('number')->unique();
-            $table->string('status')->default('free');
+            $table->string('status')->default('Free');
             $table->timestamps();
         });
     }
