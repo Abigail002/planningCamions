@@ -5,6 +5,8 @@ namespace App\Observers;
 use App\Models\Container;
 use App\Models\Forecast;
 use App\Models\Mission;
+use App\Models\Trailer;
+use App\Models\Truck;
 use App\Models\User;
 
 class ContainerObserver
@@ -45,6 +47,12 @@ class ContainerObserver
         $driver->status = 'Busy';
         $driver->save();
 
+        //Récupération du tracteur
+        $truck = Truck::find($mission->truck);
+
+        //Récupération de la remorque
+        $trailer = Trailer::find($mission->trailer);
+
         //Récupération des informations de la prévision
         $forecast = Forecast::find($mission->forecast_id);
         $date = \Carbon\Carbon::parse($forecast->forecastDate)->format('d-m-Y');
@@ -60,7 +68,7 @@ class ContainerObserver
 
             $mission->description = nl2br("Bonjour " . $name . ". Vous avez été assigné à une livraison de "
                 . $customer . " prévu le "
-                . $date . " à charger au port " . $forecast->loadPlace . ". \nNuméro TC: " . $TC->number . "\nTracteur : " . $mission->truck . "\nRemorque : " . $mission->trailer);
+                . $date . " à charger au port " . $forecast->loadPlace . ". \nNuméro TC: " . $TC->number . "\nTracteur : " . $truck->number . "\nRemorque : " . $trailer->number);
 
             $mission->save();
             //return $mission;
@@ -72,7 +80,7 @@ class ContainerObserver
             $ListMission1->driver_id  = $container->user_id;
             $ListMission1->description = nl2br("Bonjour " . $name . ". Vous avez été assigné à une livraison de "
                 . $customer . " prévu le "
-                . $date . " à charger au port " . $forecast->loadPlace . ". \nNuméro TC: " . $TC->number . "\nTracteur : " . $ListMission1->truck . "\nRemorque : " . $ListMission1->trailer);
+                . $date . " à charger au port " . $forecast->loadPlace . ". \nNuméro TC: " . $TC->number . "\nTracteur : " . $truck->number . "\nRemorque : " . $trailer->number);
             $ListMission1->save();
             //return $ListMission1;
         } else {
@@ -80,7 +88,7 @@ class ContainerObserver
             $TC1 = Container::find($ListMission->first_container_id);
             $ListMission->description = nl2br("Bonjour " . $name . ". Vous avez été assigné à une livraison de "
                 . $customer . " prévu le "
-                . $date . " à charger au port " . $forecast->loadPlace . ". \nNuméros TC: " . $TC1->number . " et " . $TC->number . "\nTracteur : " . $ListMission->truck . "\nRemorque : " . $ListMission->trailer);
+                . $date . " à charger au port " . $forecast->loadPlace . ". \nNuméros TC: " . $TC1->number . " et " . $TC->number . "\nTracteur : " . $truck->number . "\nRemorque : " . $trailer->number);
 
             $ListMission->save();
             //return $ListMission;
