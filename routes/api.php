@@ -31,7 +31,7 @@ Route::name('api.')->group(
             Route::post('/login', LoginController::class)->name('login');
         });
 
-        Route::post('/container/delivered', [ContainerController::class, 'update'])->name('container.delivered');
+        Route::post('/container/delivered/{id}', [ContainerController::class, 'update'])->name('container.delivered');
         Route::post('/container/status/{id}', [ContainerController::class, 'updateStatus'])->name('container.update.status');
         Route::post('/forecast/update/{id}', [ForecastController::class, 'update'])->name('forecast.update');
 

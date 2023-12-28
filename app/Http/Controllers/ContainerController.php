@@ -53,32 +53,38 @@ class ContainerController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request)
+    public function update($id)
     {
-        $container = Container::where('id', $request->input('TC1'))->get()->first();
+        $mission = Mission::where('id', $id)->get()->first();
+
+        $container = Container::where('id', $mission->first_container_id)->get()->first();
         $status = nl2br("Delivered");
         $container->status = $status;
         $container->save();
-        $container1 = Container::where('id', $request->input('TC2'))->get()->first();
-        $status = nl2br("Delivered");
-        $container1->status = $status;
-        $container1->save();
+        if ($mission->second_container_id) {
+            $container1 = Container::where('id', $mission->second_container_id)->get()->first();
+            $container1->status = $status;
+            $container1->save();
+        }
         $containers = Container::where('forecast_id', $container->forecast_id)->get();
 
         $allDelivered = true;
 
         foreach ($containers as $container) {
-            if ($container->status !== 'Delivered') {
+            if ($container->status == 'Delivered') {
+                $allDelivered = true;
+            } else {
                 $allDelivered = false;
                 break;
             }
         }
-
         if ($allDelivered == true) {
-            $forecast = Forecast::where('id', $container->forecast_id)->get();
+            $forecast = Forecast::where('id', $container->forecast_id)->get()->first();
             $forecast->status = 'Delivered';
             $forecast->save();
+            return $forecast;
         } else return 'Container delivered';
+
     }
 
     /**
@@ -93,15 +99,7 @@ class ContainerController extends Controller
         $mission = Mission::where('id', $id)->get()->first();
 
         $container = Container::where('id', $mission->first_container_id)->get()->first();
-        //$status = "In progress";
-        $container->status = "In progress";
-        try {
-            return $container;
-            $container->save();
-        } catch (\Exception $e) {
-            return ("Error in index method: " . $e->getMessage());
-        }
-
+        $container->update(['status' => 'In progress']);
         if ($mission->second_container_id) {
             $container1 = Container::where('id', $mission->second_container_id)->get()->first();
             $status = nl2br("In progress");
