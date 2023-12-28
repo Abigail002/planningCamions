@@ -36,7 +36,7 @@ class ContainerObserver
             ->where('trailer', '=', $container->trailer_id)
             ->get()->first();
         //Récupération si même TC
-        $ListMission1 = Mission::where('forecast_id', $mission->forecast_id)
+        $ListMission1 = Mission::where('forecast_id', $container->forecast_id)
             ->where('first_container_id', '=', $container->id)
             ->get()->first();
 
@@ -63,7 +63,7 @@ class ContainerObserver
         $TC->status = "Waiting for the driver";
         $TC->save();
 
-        if (!$ListMission) {
+        if (!$ListMission && !$ListMission1) {
             $mission->first_container_id = $container->id;
 
             $mission->description = nl2br("Bonjour " . $name . ". Vous avez été assigné à une livraison de "
