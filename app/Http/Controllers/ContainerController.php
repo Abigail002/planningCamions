@@ -78,6 +78,7 @@ class ContainerController extends Controller
             $forecast = Forecast::where('id', $container->forecast_id)->get();
             $forecast->status = 'Delivered';
             $forecast->save();
+            return "Mission end";
         } else return 'Container delivered';
     }
 
@@ -93,15 +94,7 @@ class ContainerController extends Controller
         $mission = Mission::where('id', $id)->get()->first();
 
         $container = Container::where('id', $mission->first_container_id)->get()->first();
-        //$status = "In progress";
-        $container->status = "In progress";
-        try {
-            return $container;
-            $container->save();
-        } catch (\Exception $e) {
-            return ("Error in index method: " . $e->getMessage());
-        }
-
+        $container->update(['status' => 'In progress']);
         if ($mission->second_container_id) {
             $container1 = Container::where('id', $mission->second_container_id)->get()->first();
             $status = nl2br("In progress");
