@@ -27,6 +27,7 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
+            ->favicon(asset('logoMedlog.png'))
             ->login()
             ->brandName("MEDLOG'S TMS")
             ->colors([
