@@ -6,6 +6,8 @@ use App\Filament\Resources\ContainerResource\Pages;
 use App\Http\Controllers\MissionController;
 use App\Http\Controllers\UserController;
 use App\Models\Container;
+use App\Models\Trailer;
+use App\Models\Truck;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -93,15 +95,16 @@ class ContainerResource extends Resource
                                 return [$id => "{$truck->number} - {$truck->status}"];
                             }))
                             ->searchable()
-                            ->afterStateUpdated(function (string $operation, User $user, Container $container, Forms\Get $get) {
+                            ->afterStateUpdated(function (string $operation, Container $container, Forms\Get $get) {
                                 if ($operation === "edit") {
-                                    /* return route('api.mission.add', [
-                                        'user_id' => $get('user_id'),
-                                        'forecat_id' => $get('forecat_id'),
-                                        'trailer' => $get('trailer'),
-                                        'truck' => $get('truck'),
-                                        'TC' => $get('number'),
-                                    ]); */
+                                    $truck = Truck::where('id', $get('truck_id'))->get()->first();
+                                    if ($truck) {
+                                        $truck->status = 'In use';
+                                    } else {
+                                        // Gérez le cas où $truck est null (si nécessaire)
+                                        echo "La variable \$truck est null.";
+                                    }
+                                    $truck->save();
                                 }
                             })
                             ->preload()
@@ -114,18 +117,17 @@ class ContainerResource extends Resource
                         Forms\Components\Select::make('trailer_id')
                             ->relationship('Trailer', 'number')
                             ->native(false)
-                            ->afterStateUpdated(function (string $operation, User $user, Container $container, Forms\Get $get) {
+                            ->afterStateUpdated(function (string $operation, Container $container, Forms\Get $get) {
                                 if ($operation === "edit") {
-                                    //dd($get('number'));
-                                    /* return Redirect::to('api.mission.add', [
-                                        'user_id' => $get('user_id'),
-                                        'forecat_id' => $get('forecat_id'),
-                                        'trailer' => $get('trailer_id'),
-                                        'truck' => $get('truck_id'),
-                                        'TC' => $get('number'),
-                                    ], true);
- */
-                                    //return dd($get('number'));
+                                    $trailer = Trailer::where('id', $get('trailer_id'))->get()->first();
+                                    if ($trailer) {
+                                        $trailer->status = 'In use';
+                                    } else {
+                                        // Gérez le cas où $trailer est null (si nécessaire)
+                                        echo "La variable \$truck est null.";
+                                    }
+                                    $trailer->status = 'In use';
+                                    $trailer->save();
                                 }
                             })
                             ->searchable()
@@ -145,12 +147,12 @@ class ContainerResource extends Resource
                             ]),
                         Forms\Components\Select::make('user_id')
                             ->native(false)
-                            ->afterStateUpdated(function (string $operation, User $user, Container $container, Forms\Get $get) {
+                            ->afterStateUpdated(function (string $operation, Container $container, Forms\Get $get) {
                                 if ($operation === "edit") {
                                     $container->status = 'Waiting for the driver';
-                                    /* $user = User::where('id', $container->user_id)->get()->first();
-                                    $user->status = 'Delivered';
-                                    $user->save(); */
+                                    $user = User::where('id', $get('user_id'))->get()->first();
+                                    $user->status = 'Busy';
+                                    $user->save();
                                 }
                             })
                             ->searchable()
@@ -214,9 +216,9 @@ class ContainerResource extends Resource
                 //
             ])
             ->actions([
-                    Tables\Actions\ViewAction::make(),
-                    Tables\Actions\EditAction::make(),
-                    Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ViewAction::make(),
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ], position: ActionsPosition::BeforeCells)
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
