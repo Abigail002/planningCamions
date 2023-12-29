@@ -63,8 +63,6 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $user->assignRole($role);
-        $user1->assignRole($role1);
-
         /*         $this->call([
             TrailerSeeder::class,
             TruckSeeder::class,
