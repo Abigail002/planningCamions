@@ -61,12 +61,6 @@ class DatabaseSeeder extends Seeder
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'contact' => '98788654',
         ]);
-        $user1 = User::factory()->create([
-            'name' => 'Essi GAFAH',
-            'email' => 'essi.gafah@medlog.com',
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-            'contact' => '98788654',
-        ]);
 
         $user->assignRole($role);
         $user1->assignRole($role1);
