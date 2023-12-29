@@ -36,15 +36,15 @@ class ListUsers extends ListRecords
             'Drivers' => Tab::make()
                 ->modifyQueryUsing($customQueryModifier),
             'Free drivers' => Tab::make()
-                ->modifyQueryUsing($customQueryModifier),
+                ->modifyQueryUsing(UserController::getDriversList()),
             'Busy drivers' => Tab::make()
-                ->modifyQueryUsing($customQueryModifier),
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 'Busy')),
         ];
 
         // Condition pour masquer les onglets pour les non-administrateurs
         if (Auth::user()->roles == 'CoordinationOfficer') {
-            $users=['Drivers' => $tabs['Drivers']];
-            return $users ;
+            $users = ['Drivers' => $tabs['Drivers']];
+            return $users;
         } else {
             return array_filter($tabs, function ($tab) {
                 // Masquer l'onglet s'il n'a pas de conditions spécifiques

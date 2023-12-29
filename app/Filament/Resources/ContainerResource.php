@@ -148,13 +148,9 @@ class ContainerResource extends Resource
                             ->afterStateUpdated(function (string $operation, User $user, Container $container, Forms\Get $get) {
                                 if ($operation === "edit") {
                                     $container->status = 'Waiting for the driver';
-                                    /* return route('api.mission.add', [
-                                        'user_id' => $get('user_id'),
-                                        'forecat_id' => $get('forecat_id'),
-                                        'trailer' => $get('trailer'),
-                                        'truck' => $get('truck'),
-                                        'TC' => $get('number'),
-                                    ]); */
+                                    /* $user = User::where('id', $container->user_id)->get()->first();
+                                    $user->status = 'Delivered';
+                                    $user->save(); */
                                 }
                             })
                             ->searchable()
