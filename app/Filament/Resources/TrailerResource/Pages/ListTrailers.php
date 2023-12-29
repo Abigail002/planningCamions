@@ -24,7 +24,7 @@ class ListTrailers extends ListRecords
     {
         return [
             'all' => Tab::make(),
-            'not_in_used' => Tab::make()
+            'Free' => Tab::make()
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 'Free')),
             'in_use' => Tab::make()
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 'In use')),

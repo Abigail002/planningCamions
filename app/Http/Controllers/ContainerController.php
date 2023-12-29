@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Container;
 use App\Models\Forecast;
 use App\Models\Mission;
+use App\Models\Trailer;
+use App\Models\Truck;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 
@@ -66,6 +69,19 @@ class ContainerController extends Controller
             $container1->status = $status;
             $container1->save();
         }
+
+        //Mise à jour du statut du camion et du chauffeur
+        $status = "Free";
+        $truck = Truck::where('id', $mission->truck)->get()->first();
+        $truck->status = $status;
+        $truck->save();
+        $trailer = Trailer::where('id', $mission->trailer)->get()->first();
+        $trailer->status = $status;
+        $trailer->save();
+        $driver = User::where('id', $mission->driver_id)->get()->first();
+        $driver->status = $status;
+        $driver->save();
+
         $containers = Container::where('forecast_id', $container->forecast_id)->get();
 
         $allDelivered = true;
@@ -84,7 +100,6 @@ class ContainerController extends Controller
             $forecast->save();
             return $forecast;
         } else return 'Container delivered';
-
     }
 
     /**
