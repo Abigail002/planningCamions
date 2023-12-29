@@ -190,9 +190,9 @@ class ContainerResource extends Resource
                     ->label('Driver')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('loading_file_id')
+                /* Tables\Columns\TextColumn::make('loading_file_id')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable(), */
                 Tables\Columns\TextColumn::make('number')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('weight')
@@ -214,11 +214,9 @@ class ContainerResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\ActionGroup::make([
                     Tables\Actions\ViewAction::make(),
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\DeleteAction::make(),
-                ])
             ], position: ActionsPosition::BeforeCells)
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
