@@ -102,9 +102,6 @@ class UserController extends Controller
         // Récupérer les IDs des utilisateurs depuis le tableau
         $userIds = array_keys($driversArray);
 
-        // Récupérer les IDs des utilisateurs depuis le tableau
-        // $userIds = array_keys($userArray);
-
         // Requête Eloquent pour vérifier les clés étrangères
         $containersWithMatchingDrivers = User::where('status', 'Free')
             ->whereIn('id', $userIds)
