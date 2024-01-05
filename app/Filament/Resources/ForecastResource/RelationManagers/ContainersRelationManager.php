@@ -139,9 +139,6 @@ class ContainersRelationManager extends RelationManager
                     ->label('Driver')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('loading_file_id')
-                    ->numeric()
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('number')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('weight')
