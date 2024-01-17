@@ -110,10 +110,16 @@ class UserController extends Controller
         return $containersWithMatchingDrivers;
     }
 
-    public function editStatus(User $user)
+    public function updatePassword($id, Request $request)
     {
-        $user = User::where('id', $user->id)->get();
-        $user->status = '';
+        $user = User::where('id', $id)->get()->first();
+        if (password_verify($request->oldPassword, $user->password)) {
+            $user->password = $request->newPassword;
+            $user->save();
+            return $user;
+        } else {
+            return "Mot de passe inavlide";
+        };
     }
 
     public function send()
@@ -126,14 +132,9 @@ class UserController extends Controller
 
         Mail::send('emails.test', $data, function ($message) use ($data) {
             $message->from($data['recipient']);
-            //$message->sender('john@johndoe.com', 'John Doe');
             $message->to($data['recipient']);
-            //$message->cc('john@johndoe.com', 'John Doe');
-            //$message->bcc('john@johndoe.com', 'John Doe');
-            //$message->replyTo('john@johndoe.com', 'John Doe');
             $message->subject('Subject');
             $message->priority(3);
-            //$message->attach('pathToFile');
         });
     }
 

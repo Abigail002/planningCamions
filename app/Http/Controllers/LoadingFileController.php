@@ -66,9 +66,6 @@ class LoadingFileController extends Controller
         } catch (\Exception $e) {
             // Log the error details
             return ("Error in index method: " . $e->getMessage());
-
-            // Return a generic error message
-            return "An error occurred. Please check the logs for more details.";
         }
     }
 
