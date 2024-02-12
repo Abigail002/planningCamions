@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Container;
+use App\Models\Customer;
+use App\Models\Forecast;
 use App\Models\LoadingFile;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class PdfGeneratorController extends Controller
@@ -68,6 +71,23 @@ class PdfGeneratorController extends Controller
     {
         $container = Container::where('id', $id)->get()->first();
         $file = LoadingFile::where('id', $container->loading_file_id)->get()->first();
-        return view('loadingPDF', ['file' => $file]);
+
+        //Search a second container
+        $anotherContainer = Container::where('loading_file_id', $container->loading_file_id)->where('id', '!=', $container->id)->first();
+
+        //Search the driver
+        $driver = User::where('id', $container->user_id)->get()->first();
+
+        //Search the custmer
+        $forecast = Forecast::where('id', $container->forecast_id)->get()->first();
+        $customer = Customer::where('id', $forecast->customer_id)->get()->first();
+
+        /*         if (!$anotherContainer) {
+            return view('loadingPDF', ['file' => $file, 'container' => $container, 'driver' => $driver, 'anotherContainer' => null]);
+        } else {
+            return view('loadingPDF', ['file' => $file, 'container' => $container, 'anotherContainer' => $anotherContainer, 'driver' => $driver]);
+        }
+ */
+        return view('loadingPDF', compact('file', 'container', 'driver', 'anotherContainer', 'customer'));
     }
 }
