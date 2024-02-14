@@ -70,8 +70,7 @@
                 <p class="libelle"><u>TC1 :</u></p><p class="value">{{ $container->number }}</p>
             </article>
             <article class="item">
-                <p class="libelle"><u>TC2 :</u></p><p class="value">{{ $anotherContainer->number !== null ? $anotherContainer->number : 'null' }}</p>
-            </article>
+                <p class="libelle"><u>TC2 :</u></p><p class="value">{{ $anotherContainer !== null && $anotherContainer->number !== null ? $anotherContainer->number : 'null' }}</p>            </article>
             <hr>
             <h2>A propos du chauffeur</h2>
             <article class="item">

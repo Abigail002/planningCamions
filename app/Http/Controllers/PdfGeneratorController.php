@@ -7,6 +7,7 @@ use App\Models\Customer;
 use App\Models\Forecast;
 use App\Models\LoadingFile;
 use App\Models\User;
+use PDF;
 use Illuminate\Http\Request;
 
 class PdfGeneratorController extends Controller
@@ -81,13 +82,9 @@ class PdfGeneratorController extends Controller
         //Search the custmer
         $forecast = Forecast::where('id', $container->forecast_id)->get()->first();
         $customer = Customer::where('id', $forecast->customer_id)->get()->first();
-
-        /*         if (!$anotherContainer) {
-            return view('loadingPDF', ['file' => $file, 'container' => $container, 'driver' => $driver, 'anotherContainer' => null]);
-        } else {
-            return view('loadingPDF', ['file' => $file, 'container' => $container, 'anotherContainer' => $anotherContainer, 'driver' => $driver]);
-        }
- */
-        return view('loadingPDF', compact('file', 'container', 'driver', 'anotherContainer', 'customer'));
+        //return $anotherContainer ?? 0;
+        $pdf = PDF::loadview('loadingPDF', compact('file', 'container', 'driver', 'anotherContainer', 'customer'));
+        //return view('loadingPDF', compact('file', 'container', 'driver', 'anotherContainer', 'customer'));
+        return $pdf->download('ficheDeChargement-' . $container->number . '-' . $anotherContainer->number . '.pdf');
     }
 }

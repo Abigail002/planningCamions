@@ -20,5 +20,6 @@ Route::get('/', function () {
 Route::get('/file', function () {
     return view('loadingPDF');
 });
-Route::get('/file/download/{id}', [PdfGeneratorController::class, 'generate'])->name('file');
+Route::get('/file/download/{id}', [PdfGeneratorController::class, 'generate'])->name('file.generate');
+
 

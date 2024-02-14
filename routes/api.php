@@ -5,6 +5,7 @@ use App\Http\Controllers\ContainerController;
 use App\Http\Controllers\ForecastController;
 use App\Http\Controllers\LoadingFileController;
 use App\Http\Controllers\MissionController;
+use App\Http\Controllers\PdfGeneratorController;
 use App\Http\Controllers\UserController;
 use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
