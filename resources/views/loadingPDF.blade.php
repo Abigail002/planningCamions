@@ -22,6 +22,11 @@
             max-width: 700px;
         }
 
+        table{
+            margin-left: auto;
+            margin-right: auto;
+        }
+
         hr {
             height: 2px;
             background-color: rgb(182, 119, 2);
