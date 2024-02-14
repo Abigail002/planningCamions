@@ -67,7 +67,7 @@
             <h1><u> Fiche de chargement</u></h1>
             <p class="established">MEDLOG TOGO</p>
             <hr>
-            <h2>A prpos de la cargaison</h2>
+            <h2>A propos de la marchandise</h2>
             <article class="item">
                 <p class="libelle"><u>Client :</u></p><p class="value">{{ $customer->name }}</p>
             </article>
