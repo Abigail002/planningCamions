@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use Filament\Support\Enums\ActionSize;
 use App\Filament\Resources\ContainerResource\Pages;
 use App\Http\Controllers\MissionController;
 use App\Http\Controllers\UserController;
@@ -9,6 +10,7 @@ use App\Models\Container;
 use App\Models\Trailer;
 use App\Models\Truck;
 use App\Models\User;
+use Filament\Actions\Modal\Actions\Action;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -16,9 +18,12 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Auth;
 use Filament\Facades\Filament;
+use Filament\Forms\Components\Actions\Action as ActionsAction;
 use Filament\Tables\Enums\ActionsPosition;
 use Illuminate\Support\Facades\Redirect;
 use Filament\Support\Colors\Color;
+use Filament\Tables\Actions\Action as TablesActionsAction;
+use Filament\Tables\Actions\ActionGroup;
 
 class ContainerResource extends Resource
 {
@@ -192,9 +197,6 @@ class ContainerResource extends Resource
                     ->label('Driver')
                     ->numeric()
                     ->sortable(),
-                /* Tables\Columns\TextColumn::make('loading_file_id')
-                    ->numeric()
-                    ->sortable(), */
                 Tables\Columns\TextColumn::make('number')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('weight')
@@ -218,7 +220,19 @@ class ContainerResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                ActionGroup::make([
+                    Tables\Actions\DeleteAction::make(),
+                    Tables\Actions\Action::make('download loading file')
+                        ->icon('heroicon-o-document-arrow-down')
+                        ->url(fn (Container $container) => route('file.generate', $container->id))
+                        ->openUrlInNewTab()
+                        ->visible(fn (Container $container) => $container->loading_file_id !== null),
+                ])
+                    ->label('More actions')
+                    ->icon('heroicon-m-ellipsis-vertical')
+                    ->size(ActionSize::Small)
+                    ->color('info')
+                    ->button()
             ], position: ActionsPosition::BeforeCells)
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
