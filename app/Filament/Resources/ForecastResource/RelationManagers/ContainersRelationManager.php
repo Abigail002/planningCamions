@@ -5,12 +5,15 @@ namespace App\Filament\Resources\ForecastResource\RelationManagers;
 use App\Http\Controllers\UserController;
 use App\Models\Container;
 use App\Models\User;
+use Filament\Tables\Actions\ActionGroup;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Support\Enums\ActionSize;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Support\Enums\FontFamily;
+use Filament\Tables\Enums\ActionsPosition;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
@@ -155,9 +158,22 @@ class ContainersRelationManager extends RelationManager
                 Tables\Actions\CreateAction::make(),
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-            ])
+                ActionGroup::make([
+                    Tables\Actions\DeleteAction::make(),
+                    Tables\Actions\Action::make('download loading file')
+                        ->icon('heroicon-o-document-arrow-down')
+                        ->url(fn (Container $container) => route('file.generate', $container->id))
+                        ->openUrlInNewTab()
+                        ->visible(fn (Container $container) => $container->loading_file_id !== null),
+                ])
+                    ->label('More actions')
+                    ->icon('heroicon-m-ellipsis-vertical')
+                    ->size(ActionSize::Small)
+                    ->color('info')
+                    ->button()
+            ], position: ActionsPosition::BeforeCells)
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
