@@ -125,11 +125,13 @@ class ForecastResource extends Resource
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('user.name')
+                    ->label("Responsible")
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('operation')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('BL')
+                    ->label("BL")
                     ->searchable(),
                 Tables\Columns\TextColumn::make('vessel')
                     ->searchable(),
@@ -145,6 +147,7 @@ class ForecastResource extends Resource
                     ->date()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('numbTruck')
+                    ->label("Number of truck")
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('loadDate')

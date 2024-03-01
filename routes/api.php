@@ -42,6 +42,6 @@ Route::name('api.')->group(
         Route::post('/file/add', [LoadingFileController::class, 'store'])->name('file.add');
         Route::post('/file/update/{id}', [LoadingFileController::class, 'update'])->name('file.update');
 
-        Route::post('/user/updatePassword/{id}', [UserController::class, 'updatePassword'])->name('user.update');
+        Route::post('/user/updatePassword/{id}', [UserController::class, 'updatePassword'])->name('user.update.password');
     }
 );
