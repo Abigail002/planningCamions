@@ -159,7 +159,10 @@ class ContainersRelationManager extends RelationManager
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->visible(function (Container $container) {
+                        return $container->status !== 'Delivered';
+                    }),
                 ActionGroup::make([
                     Tables\Actions\DeleteAction::make(),
                     Tables\Actions\Action::make('download loading file')

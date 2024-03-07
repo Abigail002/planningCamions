@@ -7,6 +7,8 @@ use App\Filament\Resources\ForecastResource\RelationManagers;
 use App\Filament\Resources\ForecastResource\RelationManagers\ContainersRelationManager;
 use App\Models\Forecast;
 use Filament\Forms;
+use Filament\Forms\Components\TagsInput;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -101,18 +103,18 @@ class ForecastResource extends Resource
                         Forms\Components\DatePicker::make('loadDate')
                             ->native(false)
                             ->required(),
-                        Forms\Components\Select::make('loadPlace')
-                            ->options([
+                        TextInput::make('loadPlace')
+                            ->datalist([
+                                'LCT',
+                                'PAL',
+                            ])
+                            ->required(),
+                        TextInput::make('deliveryPlace')
+                            ->datalist([
                                 'LCT' => 'LCT',
                                 'PAL' => 'PAL',
                             ])
-                            ->native(false)
-                            ->searchable()
-                            ->preload()
                             ->required(),
-                        Forms\Components\TextInput::make('deliveryPlace')
-                            ->required()
-                            ->maxLength(255),
                     ])->columns(2),
             ]);
     }

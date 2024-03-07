@@ -36,7 +36,11 @@ class ListUsers extends ListRecords
             'Drivers' => Tab::make()
                 ->modifyQueryUsing($customQueryModifier),
             'Free drivers' => Tab::make()
-                ->modifyQueryUsing(UserController::getDriversList()),
+                ->modifyQueryUsing(function (Builder $query) {
+                    $query->where('status', 'Free')->whereHas('roles', function ($subQuery) {
+                        $subQuery->where('name', 'Driver');
+                    });
+                }),
             'Busy drivers' => Tab::make()
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 'Busy')),
         ];

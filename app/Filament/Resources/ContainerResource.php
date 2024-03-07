@@ -151,6 +151,7 @@ class ContainerResource extends Resource
                                     ->maxLength(255),
                             ]),
                         Forms\Components\Select::make('user_id')
+                            ->label("driver")
                             ->native(false)
                             ->afterStateUpdated(function (string $operation, Container $container, Forms\Get $get) {
                                 if ($operation === "edit") {
@@ -219,7 +220,10 @@ class ContainerResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->visible(function (Container $container) {
+                        return $container->status !== 'Delivered';
+                    }),
                 ActionGroup::make([
                     Tables\Actions\DeleteAction::make(),
                     Tables\Actions\Action::make('download loading file')

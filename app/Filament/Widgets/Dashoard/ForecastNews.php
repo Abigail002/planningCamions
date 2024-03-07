@@ -11,12 +11,12 @@ class ForecastNews extends BaseWidget
     protected function getStats(): array
     {
         return [
-            Stat::make('Today Forecasts', Forecast::countTodayForecastsToday())
+            Stat::make("Today's Forecasts", Forecast::countTodayForecastsToday())
                 ->icon('heroicon-o-truck')
                 ->description(' Assign trucks to these forecasts')
                 ->descriptionIcon('heroicon-m-exclamation-triangle')
                 ->color('primary'),
-            Stat::make('Forecasts', Forecast::countForecastsThisWeek())
+            Stat::make('Forecast of this week', Forecast::countForecastsThisWeek())
                 ->icon('heroicon-o-truck')
                 ->description(Forecast::countForecastsThisWeek() . ' forecasts this week. Get trucks ready')
                 ->descriptionIcon('heroicon-m-exclamation-triangle')

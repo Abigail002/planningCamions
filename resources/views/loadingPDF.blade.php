@@ -25,6 +25,7 @@
         table{
             margin-left: auto;
             margin-right: auto;
+            width: 80%;
         }
 
         hr {
@@ -45,6 +46,9 @@
         .libelle {
             text-align: left;
             width: 25%;
+        }
+        th {
+            text-align: left;
         }
 
         .value {
@@ -92,67 +96,67 @@
                     <th>Heure</th>
                 </tr>
                 <tr>
-                    <th>depart CFS</th>
-                    <td>{{ $file->departCFS !== null ? $file->departCFS : 'null' }}</td>
+                    <td class="attribut">depart CFS</td>
+                    <td>{{ $file->departCFS !== null ? $file->departCFS : '' }}</td>
                 </tr>
                 <tr>
-                    <th>entree Gate 3</th>
-                    <td>{{ $file->entreeGate3 !== null ? $file->entreeGate3 : 'null' }}</td>
+                    <td class="attribut">entree Gate 3</td>
+                    <td>{{ $file->entreeGate3 !== null ? $file->entreeGate3 : '' }}</td>
                 </tr>
                 <tr>
-                    <th>arrivee Gate 10</th>
-                    <td>{{ $file->arriveeGate10 !== null ? $file->arriveeGate10 : 'null' }}</td>
+                    <td class="attribut">arrivee Gate 10</td>
+                    <td>{{ $file->arriveeGate10 !== null ? $file->arriveeGate10 : '' }}</td>
                 </tr>
                 <tr>
-                    <th>passage Gate 10</th>
-                    <td>{{ $file->passageGate10 !== null ? $file->passageGate10 : 'null' }}</td>
+                    <td class="attribut">passage Gate 10</td>
+                    <td>{{ $file->passageGate10 !== null ? $file->passageGate10 : '' }}</td>
                 </tr>
                 <tr>
-                    <th>chargement TC1</th>
-                    <td>{{ $file->chargementTC1 !== null ? $file->chargementTC1 : 'null' }}</td>
+                    <td class="attribut">chargement TC1</td>
+                    <td>{{ $file->chargementTC1 !== null ? $file->chargementTC1 : '' }}</td>
                 </tr>
                 <tr>
-                    <th>chargement TC2</th>
-                    <td>{{ $file->chargementTC2 !== null ? $file->chargementTC2 : 'null' }}</td>
+                    <td class="attribut">chargement TC2</td>
+                    <td>{{ $file->chargementTC2 !== null ? $file->chargementTC2 : '' }}</td>
                 </tr>
                 <tr>
-                    <th>passage Scanner</th>
-                    <td>{{ $file->passageScanner !== null ? $file->passageScanner : 'null' }}</td>
+                    <td class="attribut">passage Scanner</td>
+                    <td>{{ $file->passageScanner !== null ? $file->passageScanner : '' }}</td>
                 </tr>
                 <tr>
-                    <th>resultat Scanner</th>
-                    <td>{{ $file->resultatScanner !== null ? $file->resultatScanner : 'null' }}</td>
+                    <td class="attribut">resultat Scanner</td>
+                    <td>{{ $file->resultatScanner !== null ? $file->resultatScanner : '' }}</td>
                 </tr>
                 <tr>
-                    <th>sortie Douane</th>
-                    <td>{{ $file->sortieDouane !== null ? $file->sortieDouane : 'null' }}</td>
+                    <td class="attribut">sortie Douane</td>
+                    <td>{{ $file->sortieDouane !== null ? $file->sortieDouane : '' }}</td>
                 </tr>
                 <tr>
-                    <th>sortie Gate 3</th>
-                    <td>{{ $file->sortieGate3 !== null ? $file->sortieGate3 : 'null' }}</td>
+                    <td class="attribut">sortie Gate 3</td>
+                    <td>{{ $file->sortieGate3 !== null ? $file->sortieGate3 : '' }}</td>
                 </tr>
                 <tr>
-                    <th>arrivee Client</th>
-                    <td>{{ $file->arriveeClient !== null ? $file->arriveeClient : 'null' }}</td>
+                    <td class="attribut">arrivee Client</td>
+                    <td>{{ $file->arriveeClient !== null ? $file->arriveeClient : '' }}</td>
                 </tr>
                 <tr>
-                    <th>debut Déchargement</th>
-                    <td>{{ $file->debutDehargement !== null ? $file->debutDehargement : 'null' }}</td>
+                    <td class="attribut">debut Déchargement</td>
+                    <td>{{ $file->debutDehargement !== null ? $file->debutDehargement : '' }}</td>
                 </tr>
                 <tr>
-                    <th>fin Déchargement</th>
-                    <td>{{ $file->finDechargement !== null ? $file->finDechargement : 'null' }}</td>
+                    <td class="attribut">fin Déchargement</td>
+                    <td>{{ $file->finDechargement !== null ? $file->finDechargement : '' }}</td>
                 <tr>
-                    <th>depart Client</th>
-                    <td>{{ $file->departClient !== null ? $file->departClient : 'null' }}</td>
+                    <td class="attribut">depart Client</td>
+                    <td>{{ $file->departClient !== null ? $file->departClient : '' }}</td>
                 </tr>
                 <tr>
-                    <th>arrivee Gate 3</th>
-                    <td>{{ $file->arriveeGate3 !== null ? $file->arriveeGate3 : 'null' }}</td>
+                    <td class="attribut">arrivee Gate 3</td>
+                    <td>{{ $file->arriveeGate3 !== null ? $file->arriveeGate3 : '' }}</td>
                 </tr>
                 <tr>
-                    <th>arrivee CFS</th>
-                    <td>{{ $file->arriveeCFS !== null ? $file->arriveeCFS : 'null' }}</td>
+                    <td class="attribut">arrivee CFS</td>
+                    <td>{{ $file->arriveeCFS !== null ? $file->arriveeCFS : '' }}</td>
                 </tr>
             </table>
         </div>

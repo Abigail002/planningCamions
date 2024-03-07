@@ -38,7 +38,7 @@ class TruckResource extends Resource
                     ->required()
                     ->native(false)
                     ->preload()
-                    ->default('Not in use'),
+                    ->default('Free'),
             ]);
     }
 
