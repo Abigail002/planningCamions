@@ -70,18 +70,12 @@ class ContainerObserver
             if (!$ListMission && !$ListMission1) {
                 $mission->first_container_id = $container->id;
 
-<<<<<<< HEAD
-                $mission->description = nl2br("Bonjour " . $name . ". Vous avez été assigné à une livraison de "
-                    . $customer . " prévu le "
-                    . $date . " à charger au port " . $forecast->loadPlace . ". \nNuméro TC: " . $TC->number . "\nTracteur : " . $truck->number . "\nRemorque : " . $trailer->number);
-=======
                 $mission->description = "Bonjour " . $name . ". Vous avez été assigné à une livraison de "
                 . $customer . " prévu le "
                 . $date . " à charger au port " . $forecast->loadPlace . ".\n"
                 . "Numéro TC: " . $TC->number . "\n"
                 . "Tracteur : " . $truck->number . "\n"
                 . "Remorque : " . $trailer->number;
->>>>>>> develop
 
                 $mission->save();
                 //return $mission;
@@ -91,29 +85,17 @@ class ContainerObserver
                 $ListMission1->truck = $container->truck_id;
                 $ListMission1->trailer  = $container->trailer_id;
                 $ListMission1->driver_id  = $container->user_id;
-<<<<<<< HEAD
                 $ListMission1->description = nl2br("Bonjour " . $name . ". Vous avez été assigné à une livraison de "
                     . $customer . " prévu le "
                     . $date . " à charger au port " . $forecast->loadPlace . ". \nNuméro TC: " . $TC->number . "\nTracteur : " . $truck->number . "\nRemorque : " . $trailer->number);
-=======
-                $ListMission1->description = "Bonjour " . $name . ". Vous avez été assigné à une livraison de "
-                    . $customer . " prévu le "
-                    . $date . " à charger au port " . $forecast->loadPlace . ". \nNuméro TC: " . $TC->number . "\nTracteur : " . $truck->number . "\nRemorque : " . $trailer->number;
->>>>>>> develop
                 $ListMission1->save();
                 //return $ListMission1;
             } else {
                 $ListMission->second_container_id = $container->id;
                 $TC1 = Container::find($ListMission->first_container_id);
-<<<<<<< HEAD
-                $ListMission->description = nl2br("Bonjour " . $name . ". Vous avez été assigné à une livraison de "
-                    . $customer . " prévu le "
-                    . $date . " à charger au port " . $forecast->loadPlace . ". \nNuméros TC: " . $TC1->number . " et " . $TC->number . "\nTracteur : " . $truck->number . "\nRemorque : " . $trailer->number);
-=======
                 $ListMission->description = "Bonjour " . $name . ". Vous avez été assigné à une livraison de "
                     . $customer . " prévu le "
                     . $date . " à charger au port " . $forecast->loadPlace . ". \nNuméros TC: " . $TC1->number . " et " . $TC->number . "\nTracteur : " . $truck->number . "\nRemorque : " . $trailer->number;
->>>>>>> develop
 
                 $ListMission->save();
                 //return $ListMission;
@@ -144,12 +126,9 @@ class ContainerObserver
     {
         //
     }
-<<<<<<< HEAD
-=======
 
     public function sendModificationEmail()
     {
-        
+
     }
->>>>>>> develop
 }
