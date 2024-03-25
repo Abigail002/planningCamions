@@ -7,6 +7,8 @@ use App\Filament\Resources\ForecastResource\RelationManagers;
 use App\Filament\Resources\ForecastResource\RelationManagers\ContainersRelationManager;
 use App\Models\Forecast;
 use Filament\Forms;
+use Filament\Forms\Components\TagsInput;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -101,18 +103,18 @@ class ForecastResource extends Resource
                         Forms\Components\DatePicker::make('loadDate')
                             ->native(false)
                             ->required(),
-                        Forms\Components\Select::make('loadPlace')
-                            ->options([
+                        TextInput::make('loadPlace')
+                            ->datalist([
+                                'LCT',
+                                'PAL',
+                            ])
+                            ->required(),
+                        TextInput::make('deliveryPlace')
+                            ->datalist([
                                 'LCT' => 'LCT',
                                 'PAL' => 'PAL',
                             ])
-                            ->native(false)
-                            ->searchable()
-                            ->preload()
                             ->required(),
-                        Forms\Components\TextInput::make('deliveryPlace')
-                            ->required()
-                            ->maxLength(255),
                     ])->columns(2),
             ]);
     }
@@ -125,11 +127,13 @@ class ForecastResource extends Resource
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('user.name')
+                    ->label("Responsible")
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('operation')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('BL')
+                    ->label("BL")
                     ->searchable(),
                 Tables\Columns\TextColumn::make('vessel')
                     ->searchable(),
@@ -145,6 +149,7 @@ class ForecastResource extends Resource
                     ->date()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('numbTruck')
+                    ->label("Number of truck")
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('loadDate')

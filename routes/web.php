@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PdfGeneratorController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,3 +17,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/file', function () {
+    return view('loadingPDF');
+});
+Route::get('/file/download/{id}', [PdfGeneratorController::class, 'generate'])->name('file.generate');
+
+

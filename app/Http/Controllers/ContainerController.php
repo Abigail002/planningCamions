@@ -98,6 +98,10 @@ class ContainerController extends Controller
             $forecast = Forecast::where('id', $container->forecast_id)->get()->first();
             $forecast->status = 'Delivered';
             $forecast->save();
+<<<<<<< HEAD
+=======
+            $mission->delete();
+>>>>>>> develop
             return $forecast;
         } else return 'Container delivered';
     }

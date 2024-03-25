@@ -5,6 +5,7 @@ use App\Http\Controllers\ContainerController;
 use App\Http\Controllers\ForecastController;
 use App\Http\Controllers\LoadingFileController;
 use App\Http\Controllers\MissionController;
+use App\Http\Controllers\PdfGeneratorController;
 use App\Http\Controllers\UserController;
 use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
@@ -40,5 +41,7 @@ Route::name('api.')->group(
         Route::post('/mission/add', [MissionController::class, 'store'])->name('mission.add');
         Route::post('/file/add', [LoadingFileController::class, 'store'])->name('file.add');
         Route::post('/file/update/{id}', [LoadingFileController::class, 'update'])->name('file.update');
+
+        Route::post('/user/updatePassword/{id}', [UserController::class, 'updatePassword'])->name('user.update.password');
     }
 );
