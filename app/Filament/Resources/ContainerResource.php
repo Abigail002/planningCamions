@@ -198,12 +198,6 @@ class ContainerResource extends Resource
                     ->label('Driver')
                     ->numeric()
                     ->sortable(),
-<<<<<<< HEAD
-                /* Tables\Columns\TextColumn::make('loading_file_id')
-                    ->numeric()
-                    ->sortable(), */
-=======
->>>>>>> develop
                 Tables\Columns\TextColumn::make('number')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('weight')
@@ -226,10 +220,6 @@ class ContainerResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
-<<<<<<< HEAD
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-=======
                 Tables\Actions\EditAction::make()
                     ->visible(function (Container $container) {
                         return $container->status !== 'Delivered';
@@ -247,7 +237,6 @@ class ContainerResource extends Resource
                     ->size(ActionSize::Small)
                     ->color('info')
                     ->button()
->>>>>>> develop
             ], position: ActionsPosition::BeforeCells)
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
