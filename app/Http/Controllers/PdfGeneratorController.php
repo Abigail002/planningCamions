@@ -85,6 +85,11 @@ class PdfGeneratorController extends Controller
         //return $anotherContainer ?? 0;
         $pdf = PDF::loadview('loadingPDF', compact('file', 'container', 'driver', 'anotherContainer', 'customer'));
         //return view('loadingPDF', compact('file', 'container', 'driver', 'anotherContainer', 'customer'));
-        return $pdf->stream('ficheDeChargement-' . $container->number . '-' . $anotherContainer->number . '.pdf');
+        if ($container !== null && $anotherContainer !== null) {
+            return $pdf->stream('ficheDeChargement-' . $container->number . '-' . $anotherContainer->number . '.pdf');
+        } else {
+            return $pdf->stream('ficheDeChargement-' . $container->number . '.pdf');
+        }
+
     }
 }
